@@ -1,0 +1,3 @@
+[submodule "chameleon"]
+	path = chameleon
+	url = git@github.com:LittleGreenViper/chameleon.git
