@@ -68,13 +68,14 @@ require_once($config_file_path);
                         echo("<div style=\"margin:auto;text-align:center;display:table\">");
                         echo("<h2>File/Folder Locations</h2>");
                         echo("<pre style=\"margin:auto;text-align:left;display:table\">");
-                        echo("<strong>COBRA Version</strong>.........".__COBRA_VERSION__."\n");
-                        echo("<strong>CHAMELEON Version</strong>.....".__CHAMELEON_VERSION__."\n");
-                        echo("<strong>BADGER Version</strong>........".__BADGER_VERSION__."\n");
-                        echo("<strong>COBRA Base dir</strong>........".CO_Config::base_dir()."\n");
-                        echo("<strong>CHAMELEON Base dir</strong>....".CO_Config::chameleon_base_dir()."\n");
-                        echo("<strong>BADGER Base dir</strong>.......".CO_Config::badger_base_dir()."\n");
-                        echo("<strong>Extension classes dir</strong>.".CO_Config::db_classes_extension_class_dir()."\n");
+                        echo("<strong>COBRA Version</strong>...........".__COBRA_VERSION__."\n");
+                        echo("<strong>CHAMELEON Version</strong>.......".__CHAMELEON_VERSION__."\n");
+                        echo("<strong>BADGER Version</strong>..........".__BADGER_VERSION__."\n");
+                        echo("<strong>COBRA Base dir</strong>..........".CO_Config::base_dir()."\n");
+                        echo("<strong>CHAMELEON Base dir</strong>......".CO_Config::chameleon_base_dir()."\n");
+                        echo("<strong>BADGER Base dir</strong>.........".CO_Config::badger_base_dir()."\n");
+                        echo("<strong>Extension classes dir 1</strong>.".CO_Config::db_classes_extension_class_dir()[0]."\n");
+                        echo("<strong>Extension classes dir 2</strong>.".CO_Config::db_classes_extension_class_dir()[1]."\n");
                         echo("</pre></div>");
                     ?>
                     <div class="main_div">
