@@ -52,17 +52,19 @@ ob_start();
             echo('<div class="container">');
                 echo('<p class="explain"></p>');
             
+                $start = microtime(TRUE);
+                
                 echo('<div id="test-001" class="inner_closed">');
                     echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-001\')">TEST 1:</a></h3>');
                     echo('<div class="main_div inner_container">');
                         echo('<div class="main_div" style="margin-right:2em">');
                             echo('<p class="explain"></p>');
                         echo('</div>');
-                        admin_test_relay(1, 'MDAdmin', 'CodYOzPtwxb4A');
-                        $start = microtime(TRUE);
-                        echo('<h5>The test took '. sprintf('%01.3f', microtime(TRUE) - $start) . ' seconds.</h5>');
+                        admin_test_relay(1);
                     echo('</div>');
                 echo('</div>');
+                
+                echo('<h5>The entire set of tests took '. sprintf('%01.3f', microtime(TRUE) - $start) . ' seconds to complete.</h5>');
                 
             echo('</div>');
         echo('</div>');

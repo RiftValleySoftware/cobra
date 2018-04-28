@@ -58,6 +58,7 @@ require_once($config_file_path);
                     define('LGV_ACCESS_CATCHER', 1);
                 }
     
+                require_once(CO_Config::chameleon_main_class_dir().'/co_chameleon.class.php');
                 require_once(CO_Config::main_class_dir().'/co_cobra.class.php');
             ?>
             <img src="../icon.png" style="display:block;margin:auto;width:80px" alt="A Lump of COAL" />
