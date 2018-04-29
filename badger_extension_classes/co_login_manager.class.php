@@ -18,7 +18,7 @@ require_once(CO_Config::db_classes_class_dir()().'/co_security_login.class.php')
 /***************************************************************************************************************************/
 /**
  */
-class CO_Cobra_Login_Manager extends CO_Security_Login {
+class CO_Login_Manager extends CO_Security_Login {
     /***********************************************************************************************************************/    
     /***********************/
     /**
