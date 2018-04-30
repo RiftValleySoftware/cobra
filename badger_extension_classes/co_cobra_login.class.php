@@ -13,12 +13,12 @@
 */
 defined( 'LGV_ACCESS_CATCHER' ) or die ( 'Cannot Execute Directly' );	// Makes sure that this file is in the correct context.
 
-require_once(dirname(__FILE__).'/co_cobra_login.class.php');
+require_once(CO_Config::db_classes_class_dir().'/co_security_login.class.php');
 
 /***************************************************************************************************************************/
 /**
  */
-class CO_Login_Manager extends CO_Cobra_Login {
+class CO_Cobra_Login extends CO_Security_Login {
     /***********************************************************************************************************************/    
     /***********************/
     /**

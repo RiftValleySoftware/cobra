@@ -51,4 +51,14 @@ class CO_Cobra extends CO_Access {
         parent::__construct($in_login_id, $in_hashed_password, $in_raw_password);
 	    $this->version = __COBRA_VERSION__;
     }
+    
+    /***********************/
+    /**
+    This is designed to be overloaded by COBRA. In that case, it will return a list of security DB access tokens.
+    
+    \returns an array of integers, with each one representing a security token.
+     */
+    public function get_security_access_ids() {
+        return Array();
+    }
 };
