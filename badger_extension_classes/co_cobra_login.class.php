@@ -14,6 +14,7 @@
 defined( 'LGV_ACCESS_CATCHER' ) or die ( 'Cannot Execute Directly' );	// Makes sure that this file is in the correct context.
 
 require_once(CO_Config::db_classes_class_dir().'/co_security_login.class.php');
+require_once(dirname(__FILE__).'/co_login_manager.class.php');
 
 /***************************************************************************************************************************/
 /**
@@ -29,5 +30,25 @@ class CO_Cobra_Login extends CO_Security_Login {
                                     $in_raw_password = NULL     ///< The password, cleartext.
 	                            ) {
         parent::__construct($in_login_id, $in_hashed_password, $in_raw_password);
+    }
+    
+    /***********************/
+    /**
+    A user cannot change their own ID list.
+    
+    \returns TRUE, if the current logged-in user can edit IDs for this login.
+     */
+    public function user_can_edit_ids() {
+        $ret = parent::user_can_edit_ids();
+        
+        if (!$ret) {
+            $current_user = $this->get_access_object()->get_login_item();
+        
+            // Only a login Manager can edit, and it can't be us.
+            if (($current_user instanceof CO_Login_Manager) && ($current_user->id() != $this->id())) {
+            }
+        }
+        
+        return $ret;
     }
 };

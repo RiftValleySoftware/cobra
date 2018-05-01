@@ -25,7 +25,6 @@ class CO_Config {
     
     static $lang = 'en';
     
-    static $god_mode_id = 2;
     static $god_mode_password = 'BWU-HA-HAAAA-HA!';
     
     static $data_db_name = 'littlegr_badger_data';
@@ -45,6 +44,16 @@ class CO_Config {
     CHAMELEON requires this to have at least the Google Geocoding API enabled.
     */
     static $google_api_key = 'AIzaSyAPCtPBLI24J6qSpkpjngXAJtp8bhzKzK8';
+    
+    static private $_god_mode_id = 2;                           // Default is 2 (First security item created).
+
+    /***********************/
+    /**
+    \returns the God Mode user ID.
+     */
+    static function god_mode_id() {
+        return self::$_god_mode_id;
+    }
     
     /***********************/
     /**
