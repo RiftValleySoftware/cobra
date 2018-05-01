@@ -54,11 +54,9 @@ class CO_Cobra extends CO_Access {
     
     /***********************/
     /**
-    This is designed to be overloaded by COBRA. In that case, it will return a list of security DB access tokens.
-    
-    \returns an array of integers, with each one representing a security token.
+    \returns an array of integers, with each one representing a special security token for editing security items.
      */
     public function get_security_access_ids() {
-        return Array();
+        return $this->get_security_ids();
     }
 };

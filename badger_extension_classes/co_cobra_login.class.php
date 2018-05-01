@@ -46,6 +46,13 @@ class CO_Cobra_Login extends CO_Security_Login {
         
             // Only a login Manager can edit, and it can't be us.
             if (($current_user instanceof CO_Login_Manager) && ($current_user->id() != $this->id())) {
+                $ids = $this->get_access_object()->get_security_ids();
+        
+                $my_write_item = intval($this->write_security_id);
+        
+                if (isset($ids) && is_array($ids) && count($ids)) {
+                    $ret = in_array($my_write_item, $ids);
+                }
             }
         }
         
