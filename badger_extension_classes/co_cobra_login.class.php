@@ -41,7 +41,8 @@ class CO_Cobra_Login extends CO_Security_Login {
     public function user_can_edit_ids() {
         $ret = parent::user_can_edit_ids();
         
-        if (!$ret) {
+        // God objects can only be edited by themselves.
+        if (!$ret && $this->i_am_a_god()) {
             $current_user = $this->get_access_object()->get_login_item();
         
             // Only a login Manager can edit, and it can't be us.
