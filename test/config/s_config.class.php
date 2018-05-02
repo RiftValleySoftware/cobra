@@ -45,7 +45,7 @@ class CO_Config {
     */
     static $google_api_key = 'AIzaSyAPCtPBLI24J6qSpkpjngXAJtp8bhzKzK8';
     
-    static private $_god_mode_id = 2;                           // Default is 2 (First security item created).
+    static private $_god_mode_id = 2;   ///< Default is 2 (First security item created).
 
     /***********************/
     /**
