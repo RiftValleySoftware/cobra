@@ -15,7 +15,7 @@ defined( 'LGV_ACCESS_CATCHER' ) or die ( 'Cannot Execute Directly' );	// Makes s
 
 define('__COBRA_VERSION__', '1.0.0.0000');
 
-require_once(CO_Config::badger_main_class_dir().'/co_access.class.php');
+require_once(CO_Config::chameleon_main_class_dir().'/co_chameleon.class.php');
 
 $lang = CO_Config::$lang;
 
@@ -38,17 +38,17 @@ require_once($lang_common_file);
 /***************************************************************************************************************************/
 /**
  */
-class CO_Cobra extends CO_Access {
+class CO_Cobra {
+    private $_chameleon_instance = NULL;    ///< This is the CHAMELEON instance that is associated with this COBRA instance.
+    
     /***********************************************************************************************************************/    
     /***********************/
     /**
     The constructor.
      */
-	public function __construct(    $in_login_id = NULL,        ///< The login ID
-                                    $in_hashed_password = NULL, ///< The password, crypt-hashed
-                                    $in_raw_password = NULL     ///< The password, cleartext.
+	public function __construct(    $in_chameleon_instance = NULL   ///< The CHAMELEON instance associated with this COBRA instance.
 	                            ) {
-        parent::__construct($in_login_id, $in_hashed_password, $in_raw_password);
+	    $this->_chameleon_instance = $in_chameleon_instance;
 	    $this->version = __COBRA_VERSION__;
     }
     
@@ -57,6 +57,6 @@ class CO_Cobra extends CO_Access {
     \returns an array of integers, with each one representing a special security token for editing security items.
      */
     public function get_security_access_ids() {
-        return $this->get_security_ids();
+        return $this->_chameleon_instance->get_security_ids();
     }
 };
