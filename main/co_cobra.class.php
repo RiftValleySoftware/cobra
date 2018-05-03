@@ -59,4 +59,50 @@ class CO_Cobra {
     public function get_security_ids() {
         return $this->_chameleon_instance->get_security_ids();
     }
+    
+    /***********************/
+    /**
+    This createsa a new blank user object to go with a login (given as an ID).
+    
+    \returns a new instance of a user collection.
+     */
+    public function make_user_from_login(   $in_login_id = NULL ///< The login ID that is associated with the user collection. If NULL, then the current login is used.
+                                        ) {
+        $user = $this->_chameleon_instance->get_user_from_login($in_login_id);   // First, see if it's already a thing.
+        
+        if (!$user) {   // If not, we will create a new one, based on the given login.
+            $login_id = $this->_chameleon_instance->get_login_id();  // Default is the current login.
+        
+            if (isset($in_login_id) && (0 < intval($in_login_id))) {    // See if they seek a different login.
+                $login_id = intval($in_login_id);
+            }
+            
+            // Assuming all is well, we need to create a new user. We have to be a login manager to do this.
+            if (isset($in_login_id) && (0 < intval($in_login_id))) {
+                $login_item = $this->_chameleon_instance->get_login_item($in_login_id);
+                
+                if (isset($login_item) && ($login_item instanceof CO_Security_Login)) {
+                    $user = $this->_chameleon_instance->make_new_blank_record('CO_User_Collection');
+                
+                    if ($user) {
+                        $user->set_login($in_login_id);
+                    } else {
+                        $this->error = new LGV_Error(   CO_COBRA_Lang_Common::$cobra_error_code_instance_failed_to_initialize,
+                                                        CO_COBRA_Lang::$cobra_error_name_instance_failed_to_initialize,
+                                                        CO_COBRA_Lang::$cobra_error_desc_instance_failed_to_initialize);
+                    }
+                } else {
+                    $this->error = new LGV_Error(   CO_COBRA_Lang_Common::$cobra_error_code_instance_failed_to_initialize,
+                                                    CO_COBRA_Lang::$cobra_error_name_instance_failed_to_initialize,
+                                                    CO_COBRA_Lang::$cobra_error_desc_instance_failed_to_initialize);
+                }
+            } elseif (!($this->_chameleon_instance->get_user_object() instanceof CO_Login_Manager)) {
+                $this->error = new LGV_Error(   CO_COBRA_Lang_Common::$cobra_error_code_user_not_authorized,
+                                                CO_COBRA_Lang::$cobra_error_name_user_not_authorized,
+                                                CO_COBRA_Lang::$cobra_error_desc_user_not_authorized);
+            }
+        }
+        
+        return $user;
+    }
 };
