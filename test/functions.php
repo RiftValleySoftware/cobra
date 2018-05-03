@@ -23,6 +23,33 @@
         require_once($config_file_path);
     }
     
+    if ( !defined('LGV_ACCESS_CATCHER') ) {
+        define('LGV_ACCESS_CATCHER', 1);
+    }
+    
+    require_once(CO_Config::main_class_dir().'/co_cobra.class.php');
+    require_once(CO_Config::chameleon_main_class_dir().'/co_chameleon.class.php');
+    
+    function make_cobra($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
+        $cobra_instance = NULL;
+    
+        $chameleon_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
+        if (isset($chameleon_instance) && $chameleon_instance) {
+            if ($chameleon_instance->valid) {
+                echo("<h2>The CHAMELEON instance is valid!</h2>");
+                $cobra_instance = new CO_Cobra($chameleon_instance);
+                if (isset($cobra_instance) && $cobra_instance) {
+                    echo("<h2>The COBRA instance is valid!</h2>");
+                }
+            } else {
+                echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");
+                echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
+            }
+        }
+    
+        return $cobra_instance;
+    }
+    
     function prepare_databases($in_file_prefix) {
         if ( !defined('LGV_DB_CATCHER') ) {
             define('LGV_DB_CATCHER', 1);

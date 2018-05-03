@@ -13,35 +13,6 @@
 */
 require_once(dirname(dirname(__FILE__)).'/functions.php');
 
-function admin_test_relay($in_test_number, $in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
-    $function_name = sprintf('admin_test_%02d', $in_test_number);
-    
-    $function_name($in_login, $in_hashed_password, $in_password);
-}
-    
-function admin_test_01($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
-    $access_instance = NULL;
-    
-    if ( !defined('LGV_ACCESS_CATCHER') ) {
-        define('LGV_ACCESS_CATCHER', 1);
-    }
-    
-    require_once(CO_Config::main_class_dir().'/co_cobra.class.php');
-    
-    $access_instance = new CO_Cobra($in_login, $in_hashed_password, $in_password);
-    
-    if ($access_instance->valid) {
-        echo("<h2>The access instance is valid!</h2>");
-        $st1 = microtime(TRUE);
-        $fetchTime = sprintf('%01.3f', microtime(TRUE) - $st1);
-        echo('<div class="inner_div">');
-        echo('</div>');
-    } else {
-        echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");
-        echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
-    }
-}
-
 ob_start();
     prepare_databases('admin_tests');
     
@@ -71,4 +42,22 @@ ob_start();
     echo('</div>');
 $buffer = ob_get_clean();
 die($buffer);
+
+function admin_test_relay($in_test_number, $in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
+    $function_name = sprintf('admin_test_%02d', $in_test_number);
+    
+    $function_name($in_login, $in_hashed_password, $in_password);
+}
+    
+function admin_test_01($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
+    $cobra_instance = make_cobra($in_login, $in_hashed_password, $in_password);
+    
+    if ($cobra_instance) {
+        $st1 = microtime(TRUE);
+        $fetchTime = sprintf('%01.3f', microtime(TRUE) - $st1);
+        echo('<div class="inner_div">');
+echo('COBRA:<pre>'.htmlspecialchars(print_r($cobra_instance, true)).'</pre>');
+        echo('</div>');
+    }
+}
 ?>
