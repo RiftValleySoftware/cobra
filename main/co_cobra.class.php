@@ -56,7 +56,7 @@ class CO_Cobra {
     /**
     \returns an array of integers, with each one representing a special security token for editing security items.
      */
-    public function get_security_access_ids() {
+    public function get_security_ids() {
         return $this->_chameleon_instance->get_security_ids();
     }
 };
