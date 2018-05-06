@@ -48,7 +48,14 @@ class CO_Cobra {
      */
 	public function __construct(    $in_chameleon_instance = NULL   ///< The CHAMELEON instance associated with this COBRA instance.
 	                            ) {
-	    $this->_chameleon_instance = $in_chameleon_instance;
+	    if (isset($in_chameleon_instance) && ($in_chameleon_instance instanceof CO_Chameleon)) {
+	        $this->_chameleon_instance = $in_chameleon_instance;
+	    } else {
+            $this->error = new LGV_Error(   CO_COBRA_Lang_Common::$cobra_error_code_invalid_chameleon,
+                                            CO_COBRA_Lang::$cobra_error_name_invalid_chameleon,
+                                            CO_COBRA_Lang::$cobra_error_desc_invalid_chameleon);
+	    }
+	    
 	    $this->version = __COBRA_VERSION__;
     }
     
