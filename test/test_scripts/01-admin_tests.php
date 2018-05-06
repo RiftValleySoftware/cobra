@@ -50,7 +50,7 @@ function admin_test_relay($in_test_number, $in_login = NULL, $in_hashed_password
 }
     
 function admin_test_01($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
-    $cobra_instance = make_cobra($in_login, $in_hashed_password, $in_password);
+    $cobra_instance = make_cobra(NULL, $in_login, $in_hashed_password, $in_password);
     
     if ($cobra_instance) {
         $st1 = microtime(TRUE);
