@@ -38,8 +38,8 @@
             if ($chameleon_instance->valid) {
                 echo("<h2>The CHAMELEON instance is valid!</h2>");
             } else {
-                echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");
-                echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
+                echo("<h2 style=\"color:red;font-weight:bold\">The CHAMELEON instance is not valid!</h2>");
+                echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$chameleon_instance->error->error_code.') '.$chameleon_instance->error->error_name.' ('.$chameleon_instance->error->error_description.')</p>');
             }
         }
     
@@ -55,8 +55,13 @@
         
         if (isset($chameleon_instance) && $chameleon_instance) {
             $cobra_instance = new CO_Cobra($chameleon_instance);
-            if (isset($cobra_instance) && $cobra_instance) {
+            if (isset($cobra_instance) && $cobra_instance && !isset($cobra_instance->error)) {
                 echo("<h2>The COBRA instance is valid!</h2>");
+            } else {
+                echo("<h2 style=\"color:red;font-weight:bold\">The COBRA instance is not valid!</h2>");
+                if (isset($cobra_instance) && $cobra_instance && isset($cobra_instance->error)) {
+                    echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$cobra_instance->error->error_code.') '.$cobra_instance->error->error_name.' ('.$cobra_instance->error->error_description.')</p>');
+                }
             }
         }
     

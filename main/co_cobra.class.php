@@ -48,7 +48,10 @@ class CO_Cobra {
      */
 	public function __construct(    $in_chameleon_instance = NULL   ///< The CHAMELEON instance associated with this COBRA instance.
 	                            ) {
-	    if (isset($in_chameleon_instance) && ($in_chameleon_instance instanceof CO_Chameleon)) {
+	    // We must have a valid CHAMELEON instance that is logged in. The login user must be a COBRA Manager user (the standard logins cannot use COBRA).
+	    if (isset($in_chameleon_instance) && ($in_chameleon_instance instanceof CO_Chameleon)
+	        && $in_chameleon_instance->security_db_available()
+	        && ($in_chameleon_instance->god_mode() || ($in_chameleon_instance->get_login_item() instanceof CO_Login_Manager))) {
 	        $this->_chameleon_instance = $in_chameleon_instance;
 	    } else {
             $this->error = new LGV_Error(   CO_COBRA_Lang_Common::$cobra_error_code_invalid_chameleon,
