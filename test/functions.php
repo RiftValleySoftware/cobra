@@ -36,7 +36,7 @@
         $chameleon_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
         if (isset($chameleon_instance) && $chameleon_instance) {
             if ($chameleon_instance->valid) {
-                echo("<h2>The CHAMELEON instance is valid!</h2>");
+                echo("<h2 style=\"color:green;\">The CHAMELEON instance is valid!</h2>");
             } else {
                 echo("<h2 style=\"color:red;font-weight:bold\">The CHAMELEON instance is not valid!</h2>");
                 echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$chameleon_instance->error->error_code.') '.$chameleon_instance->error->error_name.' ('.$chameleon_instance->error->error_description.')</p>');
@@ -46,23 +46,16 @@
         return $chameleon_instance;
     }
     
-    function make_cobra($chameleon_instance = NULL, $in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
-        $cobra_instance = NULL;
+    function make_cobra($chameleon_instance = NULL) {
+        $cobra_instance = CO_Cobra::make_cobra($chameleon_instance);
         
-        if (!$chameleon_instance) {
-            $chameleon_instance = make_chameleon($in_login, $in_hashed_password, $in_password);
-        }
-        
-        if (isset($chameleon_instance) && $chameleon_instance) {
-            $cobra_instance = new CO_Cobra($chameleon_instance);
-            if (isset($cobra_instance) && $cobra_instance && !isset($cobra_instance->error)) {
-                echo("<h2>The COBRA instance is valid!</h2>");
-            } else {
-                echo("<h2 style=\"color:red;font-weight:bold\">The COBRA instance is not valid!</h2>");
-                if (isset($cobra_instance) && $cobra_instance && isset($cobra_instance->error)) {
-                    echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$cobra_instance->error->error_code.') '.$cobra_instance->error->error_name.' ('.$cobra_instance->error->error_description.')</p>');
-                }
-            }
+        if (isset($cobra_instance) && ($cobra_instance instanceof CO_Cobra)) {
+            echo("<h2 style=\"color:green;\">The COBRA instance is valid!</h2>");
+        } elseif ($cobra_instance instanceof LGV_Error) {
+            echo("<h2 style=\"color:red;font-weight:bold\">The COBRA instance is not valid!</h2>");
+            echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$cobra_instance->error_code.') '.$cobra_instance->error_name.' ('.$cobra_instance->error_description.')</p>');
+        } else {
+            echo("<h2 style=\"color:red;font-weight:bold\">The COBRA instance is not valid!</h2>");
         }
     
         return $cobra_instance;

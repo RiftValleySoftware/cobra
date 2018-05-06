@@ -16,7 +16,8 @@ defined( 'LGV_CONFIG_CATCHER' ) or die ( 'Cannot Execute Directly' );	// Makes s
 /***************************************************************************************************************************/
 /**
  */
-define('_DB_TYPE_', 'mysql');
+define('_MAIN_DB_TYPE_', 'mysql');
+define('_SECURITY_DB_TYPE_', 'mysql');
 
 class CO_Config {
     /***********************************************************************************************************************/
@@ -29,13 +30,13 @@ class CO_Config {
     
     static $data_db_name = 'littlegr_badger_data';
     static $data_db_host = 'localhost';
-    static $data_db_type = _DB_TYPE_;
+    static $data_db_type = _MAIN_DB_TYPE_;
     static $data_db_login = 'littlegr_badg';
     static $data_db_password = 'pnpbxI1aU0L(';
 
     static $sec_db_name = 'littlegr_badger_security';
     static $sec_db_host = 'localhost';
-    static $sec_db_type = _DB_TYPE_;
+    static $sec_db_type = _SECURITY_DB_TYPE_;
     static $sec_db_login = 'littlegr_badg';
     static $sec_db_password = 'pnpbxI1aU0L(';
 
@@ -46,14 +47,6 @@ class CO_Config {
     static $google_api_key = 'AIzaSyAPCtPBLI24J6qSpkpjngXAJtp8bhzKzK8';
     
     static private $_god_mode_id = 2;   ///< Default is 2 (First security item created).
-
-    /***********************/
-    /**
-    \returns the God Mode user ID.
-     */
-    static function god_mode_id() {
-        return self::$_god_mode_id;
-    }
     
     /***********************/
     /**
@@ -66,6 +59,18 @@ class CO_Config {
     /***********************************************************************************************************************/
     /*                                                  DON'T CHANGE THIS                                                  */
     /***********************************************************************************************************************/
+
+    /***********************/
+    /**
+    We encapsulate this, and not the password, because this is likely to be called from methods, and this prevents it from being changed.
+    
+    \returns the God Mode user ID.
+     */
+    static function god_mode_id() {
+        $id = intval(self::$_god_mode_id);  // This just ensures that the return will be an ephemeral int.
+        
+        return $id;
+    }
     
     /***********************************************************************************************************************/
     /*                                                    COBRA STUFF                                                      */

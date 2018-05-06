@@ -33,7 +33,7 @@ function admin_test_01($in_login = NULL, $in_hashed_password = NULL, $in_passwor
 }
 
 function admin_test_02($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
-    $cobra_instance = make_cobra('BUBBA', $in_login, $in_hashed_password, $in_password);
+    $cobra_instance = make_cobra('BUBBA');
 }
 
 function admin_test_03($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
