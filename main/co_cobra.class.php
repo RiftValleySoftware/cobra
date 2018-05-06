@@ -115,9 +115,28 @@ class CO_Cobra {
                 
                 if (isset($login_item) && ($login_item instanceof CO_Security_Login)) {
                     $user = $this->_chameleon_instance->make_new_blank_record('CO_User_Collection');
-                
+                    
                     if ($user) {
-                        $user->set_login($in_login_id);
+                        if (!isset($user->error)) {
+                            $user->set_login($in_login_id); // We set the user's login instance to the login instance we're using as the basis.
+                        
+                            if (!isset($user->error)) {
+                                $user->set_write_security_id($in_login_id); // Make sure the user can modify their own record.
+                                if (isset($user->error)) {
+                                    $this->error = $user->error;
+                                    $user->delete_from_db();
+                                    $user = NULL;
+                                }
+                            } else {
+                                $this->error = $user->error;
+                                $user->delete_from_db();
+                                $user = NULL;
+                            }
+                        } else {
+                            $this->error = $user->error;
+                            $user->delete_from_db();
+                            $user = NULL;
+                        }
                     } else {
                         $this->error = new LGV_Error(   CO_COBRA_Lang_Common::$cobra_error_code_instance_failed_to_initialize,
                                                         CO_COBRA_Lang::$cobra_error_name_instance_failed_to_initialize,
