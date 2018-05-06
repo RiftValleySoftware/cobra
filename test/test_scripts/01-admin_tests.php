@@ -16,7 +16,7 @@ require_once(dirname(dirname(__FILE__)).'/functions.php');
 // -------------------------------- TEST DISPATCHER ---------------------------------------------
 
 function run_tests() {
-    run_test(1, 'Invalid No Lizard Test', 'We just create a COBRA instance, with no input, and make sure it is NOT valid.', NULL, NULL, NULL);
+    run_test(1, 'Invalid Valid Big Lizard, but Invalid Direct Instantiation Test', 'We have a valid, manager-user-logged-in CHAMELEON, but try to directly instantiate a COBRA instance, which should fail.', 'king-cobra', NULL, 'CoreysGoryStory');
     run_test(2, 'Invalid Bad Lizard Test', 'We just create a COBRA instance, give it an invalid CHAMELEON, and make sure it is NOT valid.', NULL, NULL, NULL);
     run_test(3, 'Invalid Lizard Test', 'We just create a COBRA instance, give it a valid, not-even-attempted-logged-in CHAMELEON, and make sure it is NOT valid.', NULL, NULL, NULL);
     run_test(4, 'Invalid Errored Lizard Test', 'We just create a COBRA instance, give it a valid, mistake-so-not-logged-in CHAMELEON, and make sure it is NOT valid.', 'norm', NULL, 'OOPSIE');
@@ -29,7 +29,12 @@ function run_tests() {
 // -------------------------------- TESTS ---------------------------------------------
 
 function admin_test_01($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
-    $cobra_instance = make_cobra();
+    $chameleon_instance = make_chameleon($in_login, $in_hashed_password, $in_password);
+    try {
+        $cobra_instance = new CO_Cobra($chameleon_instance);
+    } catch (Error $e) {
+        echo("<h2 style=\"color:red;font-weight:bold\">The COBRA instance is not valid!</h2>");
+    }
 }
 
 function admin_test_02($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
