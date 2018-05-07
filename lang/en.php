@@ -23,5 +23,9 @@ class CO_COBRA_Lang {
     static  $cobra_error_desc_user_not_authorized = 'The current user is not authorized to create user objects.';
     static  $cobra_error_name_instance_failed_to_initialize = 'User Not Initialized';
     static  $cobra_error_desc_instance_failed_to_initialize = 'The user object failed to initialize properly.';
+    static  $cobra_error_name_user_already_exists = 'User Already Exists';
+    static  $cobra_error_desc_user_already_exists = 'The specified user already exists.';
+    static  $cobra_error_name_login_unavailable = 'The Login Is Unavailable';
+    static  $cobra_error_desc_login_unavailable = 'The reqested login is unavailable to this user.';
 }
 ?>

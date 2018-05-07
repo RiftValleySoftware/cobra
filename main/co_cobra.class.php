@@ -94,17 +94,18 @@ class CO_Cobra {
     
     /***********************/
     /**
-    This createsa a new blank user object to go with a login (given as an ID).
+    This fetches a user from a given login ID.
     
-    \returns a new instance of a user collection.
+    The user may be created, if the current login ia a Login Manager, and the second parameter is set to TRUE.
+    
+    \returns an instance of a user collection. If new, it will be blank.
      */
-    public function make_user_from_login(   $in_login_id = NULL ///< The login ID that is associated with the user collection. If NULL, then the current login is used.
+    public function get_user_from_login(    $in_login_id = NULL,                ///< The login ID that is associated with the user collection. If NULL, then the current login is used.
+                                            $in_make_user_if_necessary = FALSE  ///< If TRUE (Default is FALSE), then the user will be created if it does not already exist. Ignored, if we are not a Login Manager.
                                         ) {
         $user = $this->_chameleon_instance->get_user_from_login($in_login_id);   // First, see if it's already a thing.
         
-        if (!$user) {   // If not, we will create a new one, based on the given login.
-            $login_id = $this->_chameleon_instance->get_login_id();  // Default is the current login.
-        
+        if (!$user && $in_make_user_if_necessary && ($this->_chameleon_instance->get_login_item() instanceof CO_Login_Manager)) {   // If not, we will create a new one, based on the given login. We must be a manager.
             if (isset($in_login_id) && (0 < intval($in_login_id))) {    // See if they seek a different login.
                 $login_id = intval($in_login_id);
             }
@@ -114,15 +115,21 @@ class CO_Cobra {
                 $login_item = $this->_chameleon_instance->get_login_item($in_login_id);
                 
                 if (isset($login_item) && ($login_item instanceof CO_Security_Login)) {
-                    $user = $this->_chameleon_instance->make_new_blank_record('CO_User_Collection');
+                    if (!$this->_chameleon_instance->check_user_exists($in_login_id)) {
+                        $user = $this->_chameleon_instance->make_new_blank_record('CO_User_Collection');
                     
-                    if ($user) {
-                        if (!isset($user->error)) {
-                            $user->set_login($in_login_id); // We set the user's login instance to the login instance we're using as the basis.
-                        
+                        if ($user) {
                             if (!isset($user->error)) {
-                                $user->set_write_security_id($in_login_id); // Make sure the user can modify their own record.
-                                if (isset($user->error)) {
+                                $user->set_login($in_login_id); // We set the user's login instance to the login instance we're using as the basis.
+                        
+                                if (!isset($user->error)) {
+                                    $user->set_write_security_id($in_login_id); // Make sure the user can modify their own record.
+                                    if (isset($user->error)) {
+                                        $this->error = $user->error;
+                                        $user->delete_from_db();
+                                        $user = NULL;
+                                    }
+                                } else {
                                     $this->error = $user->error;
                                     $user->delete_from_db();
                                     $user = NULL;
@@ -133,25 +140,29 @@ class CO_Cobra {
                                 $user = NULL;
                             }
                         } else {
-                            $this->error = $user->error;
-                            $user->delete_from_db();
-                            $user = NULL;
+                            $this->error = new LGV_Error(   CO_COBRA_Lang_Common::$cobra_error_code_instance_failed_to_initialize,
+                                                            CO_COBRA_Lang::$cobra_error_name_instance_failed_to_initialize,
+                                                            CO_COBRA_Lang::$cobra_error_desc_instance_failed_to_initialize);
                         }
                     } else {
-                        $this->error = new LGV_Error(   CO_COBRA_Lang_Common::$cobra_error_code_instance_failed_to_initialize,
-                                                        CO_COBRA_Lang::$cobra_error_name_instance_failed_to_initialize,
-                                                        CO_COBRA_Lang::$cobra_error_desc_instance_failed_to_initialize);
+                        $this->error = new LGV_Error(   CO_COBRA_Lang_Common::$cobra_error_code_user_already_exists,
+                                                        CO_COBRA_Lang::$cobra_error_name_user_already_exists,
+                                                        CO_COBRA_Lang::$cobra_error_desc_user_already_exists);
                     }
                 } else {
-                    $this->error = new LGV_Error(   CO_COBRA_Lang_Common::$cobra_error_code_instance_failed_to_initialize,
-                                                    CO_COBRA_Lang::$cobra_error_name_instance_failed_to_initialize,
-                                                    CO_COBRA_Lang::$cobra_error_desc_instance_failed_to_initialize);
+                    $this->error = new LGV_Error(   CO_COBRA_Lang_Common::$cobra_error_code_login_unavailable,
+                                                    CO_COBRA_Lang::$cobra_error_name_login_unavailable,
+                                                    CO_COBRA_Lang::$cobra_error_desc_login_unavailable);
                 }
-            } elseif (!($this->_chameleon_instance->get_user_object() instanceof CO_Login_Manager)) {
-                $this->error = new LGV_Error(   CO_COBRA_Lang_Common::$cobra_error_code_user_not_authorized,
-                                                CO_COBRA_Lang::$cobra_error_name_user_not_authorized,
-                                                CO_COBRA_Lang::$cobra_error_desc_user_not_authorized);
+            } else {
+                $this->error = new LGV_Error(   CO_COBRA_Lang_Common::$cobra_error_code_login_unavailable,
+                                                CO_COBRA_Lang::$cobra_error_name_login_unavailable,
+                                                CO_COBRA_Lang::$cobra_error_desc_login_unavailable);
             }
+        } elseif (!($this->_chameleon_instance->get_login_item() instanceof CO_Login_Manager)) {
+            $this->error = new LGV_Error(   CO_COBRA_Lang_Common::$cobra_error_code_user_not_authorized,
+                                            CO_COBRA_Lang::$cobra_error_name_user_not_authorized,
+                                            CO_COBRA_Lang::$cobra_error_desc_user_not_authorized);
         }
         
         return $user;

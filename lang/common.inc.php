@@ -20,5 +20,7 @@ class CO_COBRA_Lang_Common {
     static  $cobra_error_code_user_not_authorized = 600;
     static  $cobra_error_code_instance_failed_to_initialize = 601;
     static  $cobra_error_code_invalid_chameleon = 602;
+    static  $cobra_error_code_user_already_exists = 603;
+    static  $cobra_error_code_login_unavailable = 604;
 }
 ?>
