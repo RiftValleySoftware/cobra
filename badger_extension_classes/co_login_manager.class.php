@@ -45,6 +45,7 @@ class CO_Login_Manager extends CO_Cobra_Login {
                                     ) {
         $this->_added_new_id = intval($in_login_id);
         $ret = $this->add_id($in_login_id);
+        unset($this->_added_new_id);
         return $ret;
     }
     
@@ -61,9 +62,9 @@ class CO_Login_Manager extends CO_Cobra_Login {
         if (!$ret && !$this->i_am_a_god() && $this->_added_new_id) {
             $test_obj = $this->get_access_object();
             
+            // It's a two-stage test. We also need to make sure that the CHAMELEON instance agrees that this is kosher.
             if ($test_obj instanceof CO_Chameleon) {
                 $ret = $test_obj->test_access($this->_added_new_id);
-                unset($this->_added_new_id);
             }
         }
         
