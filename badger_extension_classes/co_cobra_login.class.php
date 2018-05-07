@@ -20,6 +20,8 @@ require_once(dirname(__FILE__).'/co_login_manager.class.php');
 /**
  */
 class CO_Cobra_Login extends CO_Security_Login {
+    protected $_special_first_time_security_exemption;
+
     /***********************************************************************************************************************/    
     /***********************/
     /**
@@ -30,6 +32,7 @@ class CO_Cobra_Login extends CO_Security_Login {
                                     $in_raw_password = NULL     ///< The password, cleartext.
 	                            ) {
         parent::__construct($in_login_id, $in_hashed_password, $in_raw_password);
+        $this->_special_first_time_security_exemption = TRUE;
     }
     
     /***********************/
@@ -56,6 +59,20 @@ class CO_Cobra_Login extends CO_Security_Login {
                 }
             }
         }
+        
+        return $ret;
+    }
+
+    /***********************/
+    /**
+    This weird little function allows a creator to once -and only once- add an ID to itself, as long as that ID is for this object.
+    This is a "Heisenberg" query. Once it's called, the security exemption is gone.
+    
+    returns TRUE, if the security exemption was on.
+     */
+    public function security_exemption() {
+        $ret = $this->_special_first_time_security_exemption;
+        $this->_special_first_time_security_exemption = FALSE;
         
         return $ret;
     }

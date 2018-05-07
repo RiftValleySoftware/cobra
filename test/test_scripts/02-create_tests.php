@@ -21,6 +21,7 @@ function create_run_tests() {
     create_run_test(11, 'FAIL -Get Created User From COBRA', 'We log in and instantiate CHAMELEON as a manager, then attempt to see the same user; however, this time, we set the user to have an access the manager can\'t see, so it will attempt to create it. It should be noted that this manager can see the login ID, but not the user.', 'asp', NULL, 'CoreysGoryStory');
     create_run_test(12, 'FAIL -Get Created User From COBRA', 'We do it again, but this time, use a manager that can see the login (but not the user).', 'asp', NULL, 'CoreysGoryStory');
     create_run_test(13, 'PASS -Get Created User From COBRA', 'We do it again, but this time, use a manager that can see the user (but not the login).', 'king-cobra', NULL, 'CoreysGoryStory');
+    create_run_test(14, 'PASS -Create A Standard Login', 'Create a standard login from COBRA.', 'asp', NULL, 'CoreysGoryStory');
 }
 
 // ------------------------------------------ TESTS ------------------------------------------------
@@ -107,6 +108,22 @@ function create_test_13($in_login = NULL, $in_hashed_password = NULL, $in_passwo
             echo("<h2 style=\"color:green;font-weight:bold\">The User instance is valid!</h2>");
         } else {
             echo("<h2 style=\"color:red;font-weight:bold\">The User instance is not valid!</h2>");
+        }
+    }
+}
+
+function create_test_14($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
+    $chameleon_instance = make_chameleon($in_login, $in_hashed_password, $in_password);
+    $cobra_instance = make_cobra($chameleon_instance);
+    
+    if (isset($cobra_instance) && ($cobra_instance instanceof CO_Cobra)) {
+        $new_login = $cobra_instance->create_new_standard_login('bluto', 'CoreysGoryStory');
+
+        if (isset($new_login) && ($new_login instanceof CO_Cobra_Login)) {
+            echo("<h2 style=\"color:green;font-weight:bold\">The New Login is valid!</h2>");
+        } else {
+            echo("<h2 style=\"color:red;font-weight:bold\">The Login is not valid!</h2>");
+            echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$cobra_instance->error->error_code.') '.$cobra_instance->error->error_name.' ('.$cobra_instance->error->error_description.')</p>');
         }
     }
 }

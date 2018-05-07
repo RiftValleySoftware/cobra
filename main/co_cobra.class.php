@@ -86,6 +86,92 @@ class CO_Cobra {
     
     /***********************/
     /**
+    This is the internal function used to create a new login in the security database.
+    This can only be called from a login manager.
+    
+    \returns the new CO_Cobra_Login instance (or CO_Login_Manager instance).
+     */
+    protected function _create_new_login(   $in_login_id,                   ///< The login ID as text. It needs to be unique, within the Security database, and this will fail, if it is not.
+                                            $in_cleartext_password,         ///< The password to set (in cleartext). It will be stored as a hashed password.
+                                            $in_security_token_ids = NULL,  ///< An array of integers. These are security token IDs for the login (default is NULL). If NULL, then no IDs will be set. These IDs must be selected from those available to the currently logged-in manager.
+                                            $in_is_login_manager = FALSE    ///< TRUE, if we want a CO_Login_Manager instance, instead of a CO_Cobra_Login instance. Default is FALSE.
+                                        ) {
+        $ret = NULL;
+        
+        if (isset($in_login_id) && !$this->_chameleon_instance->check_login_exists_by_login_string($in_login_id)) {
+            $manager = $this->_chameleon_instance->get_login_item();
+            if ($manager instanceof CO_Login_Manager) { // Make sure we are a login manager, first.
+                $use_these_ids = Array();
+                // Next, see if they provided IDs. If so, we remove any that we don't own.
+                if (isset($in_security_token_ids) && is_array($in_security_token_ids) && count($in_security_token_ids)) {
+                    $my_ids = $this->get_security_ids();
+                
+                    foreach ($in_security_token_ids as $id) {
+                        if (in_array($id, $my_ids)) {
+                            array_push($use_these_ids, $id);
+                        }
+                    }
+                    // At this point, only IDs that we have available are in the array.
+                }
+                
+                $className = $in_is_login_manager ? 'CO_Login_Manager' : 'CO_Cobra_Login';
+                
+                $new_login_object = $this->_chameleon_instance->make_new_blank_record($className);
+                
+                if (isset($new_login_object) && ($new_login_object instanceof CO_Cobra_Login)) {
+                    $new_login_object->login_id = $in_login_id;
+                    $new_login_object->context['hashed_password'] = crypt($in_cleartext_password, strval(rand(10, 99)));
+                    if (!$new_login_object->update_db()) {
+                        $this->error = $new_login_object->error;
+                        $new_login_object->delete_from_db();
+                        $new_login_object = NULL;
+                    } else {
+                        $new_id = $new_login_object->id();
+                        $manager->add_new_login_id($new_id);
+                        if ($new_login_object->set_write_security_id($new_id)) {
+                            if ($new_login_object->set_ids($use_these_ids)) {
+                                $ret = $new_login_object;
+                            } else {
+                                $this->error = $new_login_object->error;
+                                $new_login_object->delete_from_db();
+                                $new_login_object = NULL;
+                            }
+                        } else {
+                            $this->error = $new_login_object->error;
+                            $new_login_object->delete_from_db();
+                            $new_login_object = NULL;
+                        }
+                    }
+                } else {
+                    if (isset($this->_chameleon_instance->error)) {
+                        $this->error = $this->_chameleon_instance->error;
+                    } else {
+                        $this->error = new LGV_Error(   CO_COBRA_Lang_Common::$cobra_error_code_instance_failed_to_initialize,
+                                                        CO_COBRA_Lang::$cobra_error_name_instance_failed_to_initialize,
+                                                        CO_COBRA_Lang::$cobra_error_desc_instance_failed_to_initialize);
+                    }
+                }
+                
+            } else {
+                $this->error = new LGV_Error(   CO_COBRA_Lang_Common::$cobra_error_code_user_not_authorized,
+                                                CO_COBRA_Lang::$cobra_error_name_user_not_authorized,
+                                                CO_COBRA_Lang::$cobra_error_desc_user_not_authorized);
+            }
+        } elseif (isset($in_login_id)) {
+            $this->error = new LGV_Error(   CO_COBRA_Lang_Common::$cobra_error_code_user_already_exists,
+                                            CO_COBRA_Lang::$cobra_error_name_user_already_exists,
+                                            CO_COBRA_Lang::$cobra_error_desc_user_already_exists);
+        } else {
+            $this->error = new LGV_Error(   CO_COBRA_Lang_Common::$cobra_error_code_login_error,
+                                            CO_COBRA_Lang::$cobra_error_name_login_error,
+                                            CO_COBRA_Lang::$cobra_error_desc_login_error);
+        }
+        
+        return $ret;
+    }
+    
+    /***********************/
+    /**
     \returns an array of integers, with each one representing a special security token for editing security items.
      */
     public function get_security_ids() {
@@ -166,5 +252,19 @@ class CO_Cobra {
         }
         
         return $user;
+    }
+    
+    /***********************/
+    /**
+    This is the public function used to create a new standard login in the security database.
+    This can only be called from a login manager.
+    
+    \returns the new CO_Cobra_Login instance.
+     */
+    public function create_new_standard_login(  $in_login_id,                   ///< The login ID as text. It needs to be unique, within the Security database, and this will fail, if it is not.
+                                                $in_cleartext_password,         ///< The password to set (in cleartext). It will be stored as a hashed password.
+                                                $in_security_token_ids = NULL   ///< An array of integers. These are security token IDs for the login (default is NULL). If NULL, then no IDs will be set. These IDs must be selected from those available to the currently logged-in manager.
+                                            ) {
+        return $this->_create_new_login($in_login_id, $in_cleartext_password, $in_security_token_ids);
     }
 };

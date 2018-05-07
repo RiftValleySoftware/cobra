@@ -27,5 +27,7 @@ class CO_COBRA_Lang {
     static  $cobra_error_desc_user_already_exists = 'The specified user already exists.';
     static  $cobra_error_name_login_unavailable = 'The Login Is Unavailable';
     static  $cobra_error_desc_login_unavailable = 'The reqested login is unavailable to this user.';
+    static  $cobra_error_name_login_error = 'Login Error';
+    static  $cobra_error_desc_login_error = 'There was an unspecified error with this login.';
 }
 ?>
