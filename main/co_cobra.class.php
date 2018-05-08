@@ -13,7 +13,7 @@
 */
 defined( 'LGV_ACCESS_CATCHER' ) or die ( 'Cannot Execute Directly' );	// Makes sure that this file is in the correct context.
 
-define('__COBRA_VERSION__', '1.0.0.0000');
+define('__COBRA_VERSION__', '1.0.0.1000');
 
 require_once(CO_Config::chameleon_main_class_dir().'/co_chameleon.class.php');
 
@@ -180,9 +180,59 @@ class CO_Cobra {
     
     /***********************/
     /**
+     */
+    public function make_standalone_user() {
+        $user = NULL;
+        
+        if ($this->_chameleon_instance->get_login_item() instanceof CO_Login_Manager) {     // We have to be a manager to create a user.
+            $user = $this->_chameleon_instance->make_new_blank_record('CO_User_Collection');
+        
+            if ($user) {
+                if (!isset($user->error)) {
+                    $user->set_write_security_id($this->_chameleon_instance->get_login_item()->id()); // Make sure that only we can modify this record.
+                    if (isset($user->error)) {
+                        $this->error = $user->error;
+                        $user->delete_from_db();
+                        $user = NULL;
+                    }
+                } else {
+                    $this->error = $user->error;
+                    $user->delete_from_db();
+                    $user = NULL;
+                }
+            } else {
+                $this->error = new LGV_Error(   CO_COBRA_Lang_Common::$cobra_error_code_instance_failed_to_initialize,
+                                                CO_COBRA_Lang::$cobra_error_name_instance_failed_to_initialize,
+                                                CO_COBRA_Lang::$cobra_error_desc_instance_failed_to_initialize);
+            }
+        } elseif (!($this->_chameleon_instance->get_login_item() instanceof CO_Login_Manager)) {
+            $this->error = new LGV_Error(   CO_COBRA_Lang_Common::$cobra_error_code_user_not_authorized,
+                                            CO_COBRA_Lang::$cobra_error_name_user_not_authorized,
+                                            CO_COBRA_Lang::$cobra_error_desc_user_not_authorized);
+        }
+        
+        return $user;
+    }
+    
+    /***********************/
+    /**
+     */
+    public function get_login_instance( $in_login_id    ///< The login ID that we are referencing.
+                                        ) {
+        $ret = NULL;
+        
+        if (isset($in_login_id) && $in_login_id) {
+            $ret = $this->_chameleon_instance->get_login_item_by_login_string($in_login_id);
+        }
+        
+        return $ret;
+    }
+    
+    /***********************/
+    /**
     This fetches a user from a given login ID.
     
-    The user may be created, if the current login ia a Login Manager, and the second parameter is set to TRUE.
+    The user may be created, if the current login is a Login Manager, and the second parameter is set to TRUE.
     
     \returns an instance of a user collection. If new, it will be blank.
      */
@@ -202,28 +252,21 @@ class CO_Cobra {
                 
                 if (isset($login_item) && ($login_item instanceof CO_Security_Login)) {
                     if (!$this->_chameleon_instance->check_user_exists($in_login_id)) {
-                        $user = $this->_chameleon_instance->make_new_blank_record('CO_User_Collection');
+                        $user = $this->make_standalone_user();
                     
                         if ($user) {
-                            if (!isset($user->error)) {
-                                $user->set_login($in_login_id); // We set the user's login instance to the login instance we're using as the basis.
-                        
-                                if (!isset($user->error)) {
-                                    $user->set_write_security_id($in_login_id); // Make sure the user can modify their own record.
-                                    if (isset($user->error)) {
-                                        $this->error = $user->error;
-                                        $user->delete_from_db();
-                                        $user = NULL;
-                                    }
-                                } else {
+                            $user->set_login($in_login_id); // We set the user's login instance to the login instance we're using as the basis.
+                            if (isset($user->error)) {
+                                $this->error = $user->error;
+                                $user->delete_from_db();
+                                $user = NULL;
+                            } else {
+                                $user->set_write_security_id($in_login_id); // Make sure the user can modify their own record.
+                                if (isset($user->error)) {
                                     $this->error = $user->error;
                                     $user->delete_from_db();
                                     $user = NULL;
                                 }
-                            } else {
-                                $this->error = $user->error;
-                                $user->delete_from_db();
-                                $user = NULL;
                             }
                         } else {
                             $this->error = new LGV_Error(   CO_COBRA_Lang_Common::$cobra_error_code_instance_failed_to_initialize,
@@ -266,5 +309,19 @@ class CO_Cobra {
                                                 $in_security_token_ids = NULL   ///< An array of integers. These are security token IDs for the login (default is NULL). If NULL, then no IDs will be set. These IDs must be selected from those available to the currently logged-in manager.
                                             ) {
         return $this->_create_new_login($in_login_id, $in_cleartext_password, $in_security_token_ids);
+    }
+    
+    /***********************/
+    /**
+    This is the public function used to create a new login manager login in the security database.
+    This can only be called from a login manager.
+    
+    \returns the new CO_Login_Manager instance.
+     */
+    public function create_new_manager_login(  $in_login_id,                   ///< The login ID as text. It needs to be unique, within the Security database, and this will fail, if it is not.
+                                                $in_cleartext_password,         ///< The password to set (in cleartext). It will be stored as a hashed password.
+                                                $in_security_token_ids = NULL   ///< An array of integers. These are security token IDs for the login (default is NULL). If NULL, then no IDs will be set. These IDs must be selected from those available to the currently logged-in manager.
+                                            ) {
+        return $this->_create_new_login($in_login_id, $in_cleartext_password, $in_security_token_ids, TRUE);
     }
 };
