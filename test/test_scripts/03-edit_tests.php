@@ -48,25 +48,25 @@ function edit_run_test($in_num, $in_title, $in_explain, $in_login = NULL, $in_ha
     echo('</div>');
 }
 
-ob_start();
-    prepare_databases('instance_tests');
-    
-    echo('<div class="test-wrapper" style="display:table;margin-left:auto;margin-right:auto;text-align:left">');
-        echo('<h1 class="header">EDIT USER TESTS</h1>');
-        echo('<div id="edit-tests" class="closed">');
-            echo('<h2 class="header"><a href="javascript:toggle_main_state(\'edit-tests\')">COBRA USER EDIT TESTS</a></h2>');
-            echo('<div class="container">');
-                echo('<p class="explain"></p>');
-            
-                $start = microtime(TRUE);
-                
-                edit_run_tests();
-                
-                echo('<h5>The entire set of tests took '. sprintf('%01.3f', microtime(TRUE) - $start) . ' seconds to complete.</h5>');
-                
-            echo('</div>');
-        echo('</div>');
-    echo('</div>');
-$buffer = ob_get_clean();
-die($buffer);
+// ob_start();
+//     prepare_databases('instance_tests');
+//     
+//     echo('<div class="test-wrapper" style="display:table;margin-left:auto;margin-right:auto;text-align:left">');
+//         echo('<h1 class="header">EDIT USER TESTS</h1>');
+//         echo('<div id="edit-tests" class="closed">');
+//             echo('<h2 class="header"><a href="javascript:toggle_main_state(\'edit-tests\')">COBRA USER EDIT TESTS</a></h2>');
+//             echo('<div class="container">');
+//                 echo('<p class="explain"></p>');
+//             
+//                 $start = microtime(TRUE);
+//                 
+//                 edit_run_tests();
+//                 
+//                 echo('<h5>The entire set of tests took '. sprintf('%01.3f', microtime(TRUE) - $start) . ' seconds to complete.</h5>');
+//                 
+//             echo('</div>');
+//         echo('</div>');
+//     echo('</div>');
+// $buffer = ob_get_clean();
+// die($buffer);
 ?>

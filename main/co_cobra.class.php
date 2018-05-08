@@ -324,4 +324,34 @@ class CO_Cobra {
                                             ) {
         return $this->_create_new_login($in_login_id, $in_cleartext_password, $in_security_token_ids, TRUE);
     }
+    
+    /***********************/
+    /**
+    This deletes a login, given the login ID.
+    
+    \returns TRUE, if the operation (or operations) succeeded.
+     */
+    public function delete_login(   $in_login_id,               ///< The login ID as text.
+                                    $also_delete_user = FALSE   ///< If TRUE (Default is FALSE), then we will also delete the user record associated with this login.
+                                ) {
+        $ret = FALSE;
+        
+        $cobra_login_instance = $this->get_login_instance($in_login_id);
+        
+        if ($cobra_login_instance) {
+            $cobra_user_instance = NULL;
+            
+            if ($also_delete_user) {
+                $cobra_user_instance = $this->get_user_from_login($cobra_login_instance->id());
+            }
+            
+            $ret = $cobra_login_instance->delete_from_db();
+            
+            if ($ret && $cobra_user_instance) {
+                $ret = $cobra_user_instance->delete_from_db();
+            }
+        }
+        
+        return $ret;
+    }
 };

@@ -29,9 +29,13 @@ function create_run_tests() {
     create_run_test(19, 'PASS -Create Another Standard Login', 'Using the manager we just created, create another standard login.', 'butthead', NULL, 'CoreysGoryStory');
     create_run_test(20, 'PASS -Create User From COBRA', 'We log in and instantiate CHAMELEON as a manager, then attempt to create a new user from the login we just created.', 'butthead', NULL, 'CoreysGoryStory');
     create_run_test(21, 'PASS -Create Standalone User From COBRA', 'We log in and instantiate CHAMELEON as a manager, then attempt to create a new standalone user.', 'beavis', NULL, 'CoreysGoryStory');
-    create_run_test(22, 'FAIL -Try to Directly Delete Login We Don\'t Own', 'We log in and instantiate CHAMELEON as a manager, then attempt to delete the "popeye" login, which we don\'t own.', 'asp', NULL, 'CoreysGoryStory');
-    create_run_test(23, 'PASS -Try to Directly Delete Login We Own', 'We log in and instantiate CHAMELEON as a manager, then attempt to delete the "popeye" login, which we now own.', 'butthead', NULL, 'CoreysGoryStory');
-    create_run_test(24, 'PASS -Create Another User From COBRA', 'We log in and instantiate CHAMELEON as a manager, then create a new login to replace the one we just deleted.', 'butthead', NULL, 'CoreysGoryStory');
+    create_run_test(22, 'FAIL -Try to Directly Delete a Login We Don\'t Own', 'We log in and instantiate CHAMELEON as a manager, then attempt to delete the "popeye" login, which we don\'t own.', 'asp', NULL, 'CoreysGoryStory');
+    create_run_test(23, 'PASS -Try to Directly Delete a Login We Own', 'We log in and instantiate CHAMELEON as a manager, then attempt to delete the "popeye" login, which we now own.', 'butthead', NULL, 'CoreysGoryStory');
+    create_run_test(24, 'PASS -Recreate the "popeye" Login', 'We log in and instantiate CHAMELEON as a manager, then create a new login to replace the one we just deleted.', 'butthead', NULL, 'CoreysGoryStory');
+    create_run_test(25, 'PASS -Delete the "popeye" Login, Using COBRA', 'We log in and instantiate CHAMELEON as a manager, then use the COBRA function to delete the login (only) that we just recreated.', 'butthead', NULL, 'CoreysGoryStory');
+    create_run_test(26, 'PASS -Recreate the "popeye" Login, and a User', 'We log in and instantiate CHAMELEON as a manager, then create a new login to replace the one we just deleted, as well as a user for that login.', 'butthead', NULL, 'CoreysGoryStory');
+    create_run_test(27, 'FAIL -Try to Delete the "popeye" Login, and the associated user, Using COBRA', 'We log in and instantiate CHAMELEON as a manager without access to the login, then use the COBRA function to attempt to delete the login (and the user) that we just recreated.', 'asp', NULL, 'CoreysGoryStory');
+    create_run_test(28, 'PASS -Delete the "popeye" Login, and the associated user, Using COBRA', 'We log in and instantiate CHAMELEON as a manager, then use the COBRA function to delete the login (and the user) that we just recreated.', 'butthead', NULL, 'CoreysGoryStory');
 }
 
 // ------------------------------------------ TESTS ------------------------------------------------
@@ -308,6 +312,70 @@ function create_test_24($in_login = NULL, $in_hashed_password = NULL, $in_passwo
         } else {
             echo("<h2 style=\"color:red;font-weight:bold\">The Login is not valid!</h2>");
             echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$cobra_instance->error->error_code.') '.$cobra_instance->error->error_name.' ('.$cobra_instance->error->error_description.')</p>');
+        }
+    }
+}
+
+function create_test_25($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
+    $chameleon_instance = make_chameleon($in_login, $in_hashed_password, $in_password);
+    $cobra_instance = make_cobra($chameleon_instance);
+    
+    if (isset($cobra_instance) && ($cobra_instance instanceof CO_Cobra)) {
+        if ($cobra_instance->delete_login('popeye')) {
+            echo("<h2 style=\"color:green;font-weight:bold\">We could delete the login, which is good.</h2>");
+        } else {
+            echo("<h2 style=\"color:red;font-weight:bold\">Oh dear, we were unable to delete the login!</h2>");
+        }
+    }
+}
+
+function create_test_26($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
+    $chameleon_instance = make_chameleon($in_login, $in_hashed_password, $in_password);
+    $cobra_instance = make_cobra($chameleon_instance);
+    
+    if (isset($cobra_instance) && ($cobra_instance instanceof CO_Cobra)) {
+        // Try to create a standard login.
+        $new_login = $cobra_instance->create_new_standard_login('popeye', 'CoreysGoryStory');
+
+        if (isset($new_login) && ($new_login instanceof CO_Cobra_Login)) {
+            echo("<h2 style=\"color:green;font-weight:bold\">The New Standard Login is valid!</h2>");
+            $cobra_user_instance = $cobra_instance->get_user_from_login($new_login->id(), true);
+
+            if (isset($cobra_user_instance) && ($cobra_user_instance instanceof CO_User_Collection)) {
+                echo("<h2 style=\"color:green;font-weight:bold\">The User instance is valid!</h2>");
+            } else {
+                echo("<h2 style=\"color:red;font-weight:bold\">The User instance is not valid!</h2>");
+                echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$cobra_instance->error->error_code.') '.$cobra_instance->error->error_name.' ('.$cobra_instance->error->error_description.')</p>');
+            }
+        } else {
+            echo("<h2 style=\"color:red;font-weight:bold\">The Login is not valid!</h2>");
+            echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$cobra_instance->error->error_code.') '.$cobra_instance->error->error_name.' ('.$cobra_instance->error->error_description.')</p>');
+        }
+    }
+}
+
+function create_test_27($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
+    $chameleon_instance = make_chameleon($in_login, $in_hashed_password, $in_password);
+    $cobra_instance = make_cobra($chameleon_instance);
+    
+    if (isset($cobra_instance) && ($cobra_instance instanceof CO_Cobra)) {
+        if ($cobra_instance->delete_login('popeye', true)) {
+            echo("<h2 style=\"color:green;font-weight:bold\">We could delete the login and the user, which is NOT good.</h2>");
+        } else {
+            echo("<h2 style=\"color:red;font-weight:bold\">We were unable to delete the login, which is what we want.</h2>");
+        }
+    }
+}
+
+function create_test_28($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
+    $chameleon_instance = make_chameleon($in_login, $in_hashed_password, $in_password);
+    $cobra_instance = make_cobra($chameleon_instance);
+    
+    if (isset($cobra_instance) && ($cobra_instance instanceof CO_Cobra)) {
+        if ($cobra_instance->delete_login('popeye', true)) {
+            echo("<h2 style=\"color:green;font-weight:bold\">We could delete the login and the user, which is good.</h2>");
+        } else {
+            echo("<h2 style=\"color:red;font-weight:bold\">Oh dear, we were unable to delete the login!</h2>");
         }
     }
 }
