@@ -94,7 +94,7 @@
             
             if ($pdo_security_db) {
                 $data_db_sql = file_get_contents(CO_Config::test_class_dir().'/sql/'.$in_file_prefix.'_data_'.CO_Config::$data_db_type.'.sql');
-                $security_db_sql = file_get_contents(CO_Config::test_class_dir().'/sql/'.$in_file_prefix.'_security_'.CO_Config::$data_db_type.'.sql');
+                $security_db_sql = file_get_contents(CO_Config::test_class_dir().'/sql/'.$in_file_prefix.'_security_'.CO_Config::$sec_db_type.'.sql');
                 
                 $error = NULL;
         

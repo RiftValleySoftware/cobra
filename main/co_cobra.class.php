@@ -328,6 +328,8 @@ class CO_Cobra {
     /***********************/
     /**
     This deletes a login, given the login ID.
+    When we delete a login, it actually gets changed into a security ID instance (to reserve the ID slot), however, the user object is actually removed.
+    It should be noted that deleting a (user) collection does not delete everything in the collection; only the collection object, itself.
     
     \returns TRUE, if the operation (or operations) succeeded.
      */
@@ -350,6 +352,52 @@ class CO_Cobra {
             if ($ret && $cobra_user_instance) {
                 $ret = $cobra_user_instance->delete_from_db();
             }
+        }
+        
+        return $ret;
+    }
+    
+    /***********************/
+    /**
+    This returns an array of instances of all the logins that are visible to this user.
+     */
+    public function get_all_logins( $in_login_id = NULL,    ///< This is ignored, unless this is the God login. If We are logged in as God, then we can select a login via its string login ID, and see what logins are available to it.
+                                    $and_write = FALSE      ///< If TRUE, then we only want ones we have write access to.
+                                    ) {
+        $id_list = Array();
+        $results = $this->_chameleon_instance->get_all_login_objects($and_write);
+        if (isset($results) && is_array($results) && count($results)) {
+            foreach ($results as $result) {
+                if (!$in_login_id || ($result->login_id == $in_login_id)) {
+                    $id_list[] = $result->id();
+                    foreach ($result->ids() as $id) {
+                        $id_list[] = $id;
+                    }
+                }
+            }
+        }
+        
+        $id_list = array_unique($id_list);
+        $ret = Array();
+        foreach ($id_list as $id) {
+            $object = $this->_chameleon_instance->get_single_security_record_by_id($id);
+            if ($object instanceof CO_Security_Login) {
+                $ret[] = $object;
+            }
+        }
+        if (1 < count($ret)) {
+            // Sort the results by ID.
+            usort($ret, function ($a, $b) {
+                                            if ($a->id() == $b->id()) {
+                                                return 0;
+                                            }
+                                        
+                                            if ($a->id() < $b->id()) {
+                                                return -1;
+                                            }
+                                        
+                                            return 1;
+                                            });
         }
         
         return $ret;
