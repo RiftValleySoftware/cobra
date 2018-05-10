@@ -359,7 +359,7 @@ class CO_Cobra {
     
     /***********************/
     /**
-    \returns an array of instances of all the logins that are visible to this user.
+    \returns an array of instances of all the logins that are visible to the current user (or a supplied user, if in "God" mode).
      */
     public function get_all_logins( $and_write = FALSE,         ///< If TRUE, then we only want ones we have write access to.
                                     $in_login_id = NULL,        ///< This is ignored, unless this is the God login. If We are logged in as God, then we can select a login via its string login ID, and see what logins are available to it.
@@ -431,11 +431,11 @@ class CO_Cobra {
     
     \returns an array of instances of CO_Security_Login (Security Database login) items that can read/see the given item. If the read ID is 0 (open), then the function simply returns TRUE. If nothing can see the item, then FALSE is returned.
      */
-    public function who_can_see(    $in_test_target ///< This is an instance (or subclass) of CO_Main_DB_Record (Main Data Database Record).
+    public function who_can_see(    $in_test_target ///< This is a subclass of A_CO_DB_Table_Base (General Database Record).
                                 ) {
         $ret = FALSE;
         
-        if (isset($in_test_target) && ($in_test_target instanceof CO_Main_DB_Record)) {
+        if (isset($in_test_target) && ($in_test_target instanceof A_CO_DB_Table_Base)) {
             $id = intval($in_test_target->read_security_id);
             
             if (0 < $id) {
@@ -457,18 +457,37 @@ class CO_Cobra {
     
     This is security-limited.
     
-    \returns an array of instances of CO_Security_Login (Security Database login) items that can modify the given item. If the write ID is 0 (open), then the function simply returns TRUE. If nothing can see the item, then FALSE is returned.
+    \returns an array of instances of CO_Security_Login (Security Database login) items that can modify the given item. If the write ID is 0 (open), then the function simply returns TRUE. If nothing can modify the item, then FALSE is returned.
      */
-    public function who_can_modify( $in_test_target ///< This is an instance (or subclass) of CO_Main_DB_Record (Main Data Database Record).
+    public function who_can_modify( $in_test_target,            ///< This is a subclass of A_CO_DB_Table_Base (General Database Record).
+                                    $non_managers_only = FALSE  /**< Ignored if the target is not an instance (or subclass) of CO_Security_Login.
+                                                                     If TRUE (default is FALSE), then only login manager objects will be returned.
+                                                                     If you supply a login object as the target, this is a quick way to see if any non-manager objects can modify it.
+                                                                     In reality, there should be no non-manager objects that can modify a login, besides the login, itself.
+                                                                */
                                     ) {
         $ret = FALSE;
         
-        if (isset($in_test_target) && ($in_test_target instanceof CO_Main_DB_Record)) {
+        if (isset($in_test_target) && ($in_test_target instanceof A_CO_DB_Table_Base)) {
             $id = intval($in_test_target->write_security_id);
             
             if (0 < $id) {
                 $ret = $this->_chameleon_instance->get_all_login_objects_with_access($id, TRUE);
-                if (!isset($ret) || !is_array($ret) || !count($ret)) {
+                // Check to see if any non-manager objects can modify the login (should never be).
+                if (($in_test_target instanceof CO_Security_Login) && isset($ret) && is_array($ret) && $non_managers_only) {
+                    $ret_temp = Array();
+                    foreach ($ret as $login) {
+                        if (!($login instanceof CO_Login_Manager)) {
+                            $ret_temp[] = $login;
+                        }
+                    }
+                    
+                    if (count($ret_temp)) {
+                        $ret = $ret_temp;
+                    } else {
+                        $ret = FALSE;
+                    }
+                } elseif (!isset($ret) || !is_array($ret) || !count($ret)) {
                     $ret = FALSE;
                 }
             } elseif (0 == $id) {
