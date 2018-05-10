@@ -188,6 +188,10 @@
                             }
                         }
                     }
+            
+                    if (isset($in_record_object->login_id)) {
+                        echo("<p>Login ID: ".$in_record_object->login_id."</p>");
+                    }
                 
                     echo("<p>$in_record_object->class_description</p>");
                     echo("<p>$in_record_object->instance_description</p>");

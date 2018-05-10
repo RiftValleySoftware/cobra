@@ -20,6 +20,7 @@ class CO_COBRA_Lang {
     static  $cobra_error_name_invalid_chameleon = 'Invalid CHAMELEON Instance';
     static  $cobra_error_desc_invalid_chameleon = 'COBRA cannot be initialized with the given CHAMELEON instance.';
     static  $cobra_error_name_user_not_authorized = 'Current User Not Authorized';
+    static  $cobra_error_desc_user_not_authorized_instance = 'The current user is not authorized to instantiate COBRA.';
     static  $cobra_error_desc_user_not_authorized = 'The current user is not authorized to create user objects.';
     static  $cobra_error_name_instance_failed_to_initialize = 'User Not Initialized';
     static  $cobra_error_desc_instance_failed_to_initialize = 'The user object failed to initialize properly.';

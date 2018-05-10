@@ -61,7 +61,7 @@ class CO_Cobra {
         } elseif (isset($in_chameleon_instance) && ($in_chameleon_instance instanceof CO_Chameleon)) {
             $ret = new LGV_Error(   CO_COBRA_Lang_Common::$cobra_error_code_user_not_authorized,
                                     CO_COBRA_Lang::$cobra_error_name_user_not_authorized,
-                                    CO_COBRA_Lang::$cobra_error_desc_user_not_authorized);
+                                    CO_COBRA_Lang::$cobra_error_desc_user_not_authorized_instance);
         } else {
             $ret = new LGV_Error(   CO_COBRA_Lang_Common::$cobra_error_code_invalid_chameleon,
                                     CO_COBRA_Lang::$cobra_error_name_invalid_chameleon,
@@ -359,19 +359,39 @@ class CO_Cobra {
     
     /***********************/
     /**
-    This returns an array of instances of all the logins that are visible to this user.
+    \returns an array of instances of all the logins that are visible to this user.
      */
-    public function get_all_logins( $in_login_id = NULL,    ///< This is ignored, unless this is the God login. If We are logged in as God, then we can select a login via its string login ID, and see what logins are available to it.
-                                    $and_write = FALSE      ///< If TRUE, then we only want ones we have write access to.
+    public function get_all_logins( $and_write = FALSE,         ///< If TRUE, then we only want ones we have write access to.
+                                    $in_login_id = NULL,        ///< This is ignored, unless this is the God login. If We are logged in as God, then we can select a login via its string login ID, and see what logins are available to it.
+                                    $in_login_integer_id = NULL ///< This is ignored, unless this is the God login and $in_login_id is not specified. If We are logged in as God, then we can select a login via its integer login ID, and see what logins are available to it.
                                     ) {
+        if (!$this->_chameleon_instance->god_mode()) {  // Definitely won't look at this unless we are God.
+            $in_login_id = NULL;
+            $in_login_integer_id = 0;
+        } else {
+            $in_login_id = trim(strval($in_login_id));
+        
+            if (!$in_login_id) {    // String login ID trumps integer.
+                $in_login_integer_id = intval($in_login_integer_id);
+            } else {
+                $item = $this->_chameleon_instance->get_login_item_by_login_string($in_login_id);
+                $in_login_id = NULL;
+                $in_login_integer_id = $item->id();
+            }
+        }
+        
+        // If both $in_login_id and $in_login_integer_id are unspecified, then we'll find every login we can see.
+        // If they are specified (which means we're God), then we filter for only the 
         $id_list = Array();
         $results = $this->_chameleon_instance->get_all_login_objects($and_write);
         if (isset($results) && is_array($results) && count($results)) {
             foreach ($results as $result) {
-                if (!$in_login_id || ($result->login_id == $in_login_id)) {
+                if (!$in_login_integer_id || ($in_login_integer_id == $result->id())) {
                     $id_list[] = $result->id();
                     foreach ($result->ids() as $id) {
-                        $id_list[] = $id;
+                        if (($id != CO_Config::god_mode_id()) || (($id == CO_Config::god_mode_id()) && ($in_login_integer_id == CO_Config::god_mode_id()))) {
+                            $id_list[] = $id;
+                        }
                     }
                 }
             }
@@ -398,6 +418,62 @@ class CO_Cobra {
                                         
                                             return 1;
                                             });
+        }
+        
+        return $ret;
+    }
+    
+    /***********************/
+    /**
+    Test an item to see which logins can access it.
+    
+    This is security-limited.
+    
+    \returns an array of instances of CO_Security_Login (Security Database login) items that can read/see the given item. If the read ID is 0 (open), then the function simply returns TRUE. If nothing can see the item, then FALSE is returned.
+     */
+    public function who_can_see(    $in_test_target ///< This is an instance (or subclass) of CO_Main_DB_Record (Main Data Database Record).
+                                ) {
+        $ret = FALSE;
+        
+        if (isset($in_test_target) && ($in_test_target instanceof CO_Main_DB_Record)) {
+            $id = intval($in_test_target->read_security_id);
+            
+            if (0 < $id) {
+                $ret = $this->_chameleon_instance->get_all_login_objects_with_access($id);
+                if (!isset($ret) || !is_array($ret) || !count($ret)) {
+                    $ret = FALSE;
+                }
+            } elseif (0 == $id) {
+                $ret = TRUE;
+            }
+        }
+        
+        return $ret;
+    }
+    
+    /***********************/
+    /**
+    Test an item to see which logins can modify it.
+    
+    This is security-limited.
+    
+    \returns an array of instances of CO_Security_Login (Security Database login) items that can modify the given item. If the write ID is 0 (open), then the function simply returns TRUE. If nothing can see the item, then FALSE is returned.
+     */
+    public function who_can_modify( $in_test_target ///< This is an instance (or subclass) of CO_Main_DB_Record (Main Data Database Record).
+                                    ) {
+        $ret = FALSE;
+        
+        if (isset($in_test_target) && ($in_test_target instanceof CO_Main_DB_Record)) {
+            $id = intval($in_test_target->write_security_id);
+            
+            if (0 < $id) {
+                $ret = $this->_chameleon_instance->get_all_login_objects_with_access($id, TRUE);
+                if (!isset($ret) || !is_array($ret) || !count($ret)) {
+                    $ret = FALSE;
+                }
+            } elseif (0 == $id) {
+                $ret = TRUE;
+            }
         }
         
         return $ret;
