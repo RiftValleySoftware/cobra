@@ -197,6 +197,7 @@
                     echo("<p>$in_record_object->instance_description</p>");
                     echo("<p>Read: $in_record_object->read_security_id</p>");
                     echo("<p>Write: $in_record_object->write_security_id</p>");
+                    echo("<p>Lang: ".$in_record_object->get_lang()."</p>");
             
                     if (method_exists($in_record_object, 'owner_id') && intval($in_record_object->owner_id())) {
                         echo("<p>Owner: ".intval($in_record_object->owner_id())."</p>");
