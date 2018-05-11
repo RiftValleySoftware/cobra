@@ -240,17 +240,7 @@
             
                     if ( $in_record_object instanceof CO_Security_Login) {
                         if (method_exists($in_record_object, 'ids')) {
-                            echo("<p>IDs: ");
-                                $first = TRUE;
-                                foreach ( $in_record_object->ids() as $id ) {
-                                    if (!$first) {
-                                        echo(", ");
-                                    } else {
-                                        $first = FALSE;
-                                    }
-                                    echo($id);
-                                }
-                            echo("</p>");
+                            echo("<p>IDs: ".implode(', ', $in_record_object->ids())."</p>");
                         } else {
                             echo("<h4>NO IDS!</h4>");
                         }

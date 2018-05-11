@@ -17,9 +17,11 @@ INSERT INTO `co_security_nodes` (`id`, `login_id`, `access_class`, `last_access`
 (3, 'norm', 'CO_Security_Login', '1970-01-01 00:00:00', 3, 3, 'Low-Level 1', 'a:1:{s:15:\"hashed_password\";s:13:\"CodYOzPtwxb4A\";}', NULL),
 (4, 'bob', 'CO_Security_Login', '1970-01-01 00:00:00', 4, 4, 'Low-Level 2', 'a:1:{s:15:\"hashed_password\";s:13:\"CodYOzPtwxb4A\";}', NULL),
 (5, 'cobra', 'CO_Cobra_Login', '1970-01-01 00:00:00', 5, 5, 'Normal COBRA Login (cobra)', 'a:1:{s:15:\"hashed_password\";s:13:\"CodYOzPtwxb4A\";}', NULL),
-(6, 'krait', 'CO_Cobra_Login', '1970-01-01 00:00:00', 6, 6, 'Normal COBRA Login (krait)', 'a:1:{s:15:\"hashed_password\";s:13:\"CodYOzPtwxb4A\";}', '2'),
+(6, 'krait', 'CO_Cobra_Login', '1970-01-01 00:00:00', 6, 6, 'Normal COBRA Login (krait)', 'a:1:{s:15:\"hashed_password\";s:13:\"CodYOzPtwxb4A\";}', '2, 10'),
 (7, 'asp', 'CO_Login_Manager', '1970-01-01 00:00:00', 7, 7, 'Boss COBRA Manager (asp)', 'a:1:{s:15:\"hashed_password\";s:13:\"CodYOzPtwxb4A\";}', '3,4,5'),
-(8, 'king-cobra', 'CO_Login_Manager', '1970-01-01 00:00:00', 8, 8, 'Boss COBRA Manager (king)', 'a:1:{s:15:\"hashed_password\";s:13:\"CodYOzPtwxb4A\";}', '2,6');
+(8, 'king-cobra', 'CO_Login_Manager', '1970-01-01 00:00:00', 8, 8, 'Boss COBRA Manager (king)', 'a:1:{s:15:\"hashed_password\";s:13:\"CodYOzPtwxb4A\";}', '2,6,10'),
+(9, 'duke', 'CO_Login_Manager', '1970-01-01 00:00:00', 9, 9, 'Daisy', 'a:1:{s:15:\"hashed_password\";s:13:\"CodYOzPtwxb4A\";}', '3,10'),
+(10, 'emperor', 'CO_Login_Manager', '1970-01-01 00:00:00', 10, 10, 'Me Big Chief', 'a:1:{s:15:\"hashed_password\";s:13:\"CodYOzPtwxb4A\";}', '2,3,4,5,6,7,8,9');
 
 ALTER TABLE `co_security_nodes`
   ADD PRIMARY KEY (`id`),
@@ -31,4 +33,4 @@ ALTER TABLE `co_security_nodes`
   ADD KEY `object_name` (`object_name`);
 
 ALTER TABLE `co_security_nodes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
