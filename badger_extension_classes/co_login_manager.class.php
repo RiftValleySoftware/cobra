@@ -70,4 +70,33 @@ class CO_Login_Manager extends CO_Cobra_Login {
         
         return $ret;
     }
+    
+    /***********************/
+    /**
+    A manager can only have one token label object. This fetches it from the CHAMELEON instance.
+    
+    If the object does not exist, then a new one is created.
+    
+    \returns the manager's token label object.
+     */
+    public function get_my_token_label_object() {
+        $ret = NULL;
+        
+        $token_label_objects = $this->get_access_id()->get_security_token_labels();
+        
+        if (isset($token_label_objects) && is_array($token_label_objects) && count($token_label_objects)) {
+            foreach ($token_label_objects as $object) {
+                if ($object->get_manager_id() == $this->id()) {
+                    $ret = $object;
+                    break;
+                }
+            }
+        }
+        
+        // See if we need to create one.
+        if (!isset($ret) || !($ret instanceof CO_Token_Labels)) {
+        }
+        
+        return $ret;
+    }
 };
