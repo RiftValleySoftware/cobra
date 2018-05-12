@@ -21,8 +21,7 @@ INSERT INTO `co_security_nodes` (`id`, `login_id`, `access_class`, `last_access`
 (7, 'asp', 'CO_Login_Manager', '1970-01-01 00:00:00', 7, 7, 'Boss COBRA Manager (asp)', 'a:2:{s:4:"lang";s:2:"en";s:15:"hashed_password";s:13:"62oAxuuttfjZI";}', '3,4,5'),
 (8, 'king-cobra', 'CO_Login_Manager', '1970-01-01 00:00:00', 8, 8, 'Boss COBRA Manager (king)', 'a:2:{s:4:"lang";s:2:"en";s:15:"hashed_password";s:13:"62oAxuuttfjZI";}', '2,6,10'),
 (9, 'duke', 'CO_Login_Manager', '1970-01-01 00:00:00', 9, 9, 'Daisy', 'a:2:{s:4:"lang";s:2:"en";s:15:"hashed_password";s:13:"62oAxuuttfjZI";}', '3,10'),
-(10, 'emperor', 'CO_Login_Manager', '1970-01-01 00:00:00', 10, 10, 'Me Big Chief', 'a:2:{s:4:"lang";s:2:"en";s:15:"hashed_password";s:13:"62oAxuuttfjZI";}', '2,3,4,5,6,7,8,9'),
-(11, NULL, 'CO_Token_Labels', '1970-01-01 00:00:00', 0, 7, 'Asp Tokens', 'a:1:{s:10:"manager_id";s:1:"7";}', '2,3,4,5,6,7,8,9,10');
+(10, 'emperor', 'CO_Login_Manager', '1970-01-01 00:00:00', 10, 10, 'Me Big Chief', 'a:2:{s:4:"lang";s:2:"en";s:15:"hashed_password";s:13:"62oAxuuttfjZI";}', '2,3,4,5,6,7,8,9');
 
 ALTER TABLE `co_security_nodes`
   ADD PRIMARY KEY (`id`),
@@ -34,4 +33,4 @@ ALTER TABLE `co_security_nodes`
   ADD KEY `object_name` (`object_name`);
 
 ALTER TABLE `co_security_nodes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
