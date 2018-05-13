@@ -13,7 +13,7 @@
 */
 defined( 'LGV_ACCESS_CATCHER' ) or die ( 'Cannot Execute Directly' );	// Makes sure that this file is in the correct context.
 
-define('__COBRA_VERSION__', '1.0.0.1000');
+define('__COBRA_VERSION__', '1.0.0.2000');
 
 require_once(CO_Config::chameleon_main_class_dir().'/co_chameleon.class.php');
 
@@ -493,6 +493,44 @@ class CO_Cobra {
             } elseif (0 == $id) {
                 $ret = TRUE;
             }
+        }
+        
+        return $ret;
+    }
+    
+    /***********************/
+    /**
+    This simply generates a new security token instance.
+    
+    Security tokens are "the gift that keeps on giving." Once created, they can't easily be deleted. Only the God admin can delete them. They are permanent placeholders.
+    
+    \returns an integer, with the new ID, or 0, if the method failed (check error).
+     */
+    public function make_security_token() {
+        $ret = 0;
+        
+        $manager = $this->_chameleon_instance->get_login_item();
+        if ($manager instanceof CO_Login_Manager) {
+            $new_token = $this->_chameleon_instance->make_new_blank_record('CO_Security_ID');
+            if (isset($new_token) && ($new_token instanceof CO_Security_ID)) {
+                $new_id = $new_token->id();
+                if ($manager->add_new_login_id($new_id)) {  // We need to do the "special excemption" add of the ID to the manager.
+                    $ret = $new_id;
+                } else {    // We were unable to set the new token ID to the manager.
+                    $new_token->delete_from_db();
+                    $this->error = new LGV_Error(   CO_COBRA_Lang_Common::$cobra_error_code_token_id_not_set,
+                                                    CO_COBRA_Lang::$cobra_error_name_token_id_not_set,
+                                                    CO_COBRA_Lang::$cobra_error_desc_token_id_not_set);
+                }
+            } else {    // Token object did not get instantiated.
+                $this->error = new LGV_Error(   CO_COBRA_Lang_Common::$cobra_error_code_token_instance_failed_to_initialize,
+                                                CO_COBRA_Lang::$cobra_error_name_token_instance_failed_to_initialize,
+                                                CO_COBRA_Lang::$cobra_error_desc_token_instance_failed_to_initialize);
+            }
+        } else {    // Should never happen, but what the hell...
+            $this->error = new LGV_Error(   CO_COBRA_Lang_Common::$cobra_error_code_user_not_authorized,
+                                            CO_COBRA_Lang::$cobra_error_name_user_not_authorized,
+                                            CO_COBRA_Lang::$cobra_error_desc_user_not_authorized);
         }
         
         return $ret;

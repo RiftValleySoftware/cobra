@@ -21,6 +21,7 @@ function security_run_tests_1() {
     security_run_test(56, 'PASS -ID Visibility (duke)', 'We log in as \'duke\', and look at the \'emperor\' login. We examine the security IDs, and make sure that we only see the ones we\'re cleared to see.', 'duke', NULL, 'CoreysGoryStory');
     security_run_test(57, 'FAIL -Login Visibility (asp)', 'We log in as \'asp\', and try to look at the \'emperor\' login. We expect this to fail, as \'asp\' is not cleared to view \'emperor\'.', 'asp', NULL, 'CoreysGoryStory');
     security_run_test(58, 'FAIL -Login Visibility (krait)', 'We log in as \'krait\', and try to look directly at the \'emperor\' login. We expect this to fail, as \'krait\' is not a manager object.', 'krait', NULL, 'CoreysGoryStory');
+    security_run_test(59, 'PASS -CreateNew Security ID', 'We log in as \'asp\', and create a new security token.', 'asp', NULL, 'CoreysGoryStory');
 }
 
 // ------------------------------------------ TESTS ------------------------------------------------
@@ -49,6 +50,27 @@ function security_test_57($in_login = NULL, $in_hashed_password = NULL, $in_pass
 
 function security_test_58($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
     security_test_54($in_login, $in_hashed_password, $in_password);
+}
+
+function security_test_59($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
+    $chameleon_instance = make_chameleon($in_login, $in_hashed_password, $in_password);
+    if (isset($chameleon_instance) && ($chameleon_instance instanceof CO_Chameleon)) {
+        $cobra_instance = make_cobra($chameleon_instance);
+        if (isset($cobra_instance) && ($cobra_instance instanceof CO_Cobra)) {
+            $new_security_token_id = $cobra_instance->make_security_token();
+            
+            if ($new_security_token_id) {
+                echo('<h3 style="color:green">The new security token ID is '.$new_security_token_id.'</h3>');
+            } else {
+                echo('<h3 style="color:red">Unable to create the security token!</h3>');
+                echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$cobra_instance->error->error_code.') '.$cobra_instance->error->error_name.' ('.$cobra_instance->error->error_description.')</p>');
+            }
+        } else {
+            echo('<h3 style="color:red">Unable to create the COBRA instance!</h3>');
+        }
+    } else {
+        echo('<h3 style="color:red">Unable to create the CHAMELEON instance!</h3>');
+    }
 }
 
 // ----------------------------------------- STRUCTURE ---------------------------------------------

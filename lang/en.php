@@ -30,5 +30,9 @@ class CO_COBRA_Lang {
     static  $cobra_error_desc_login_unavailable = 'The reqested login is unavailable to this user.';
     static  $cobra_error_name_login_error = 'Login Error';
     static  $cobra_error_desc_login_error = 'There was an unspecified error with this login.';
+    static  $cobra_error_name_token_instance_failed_to_initialize = 'Token Not Initialized';
+    static  $cobra_error_desc_token_instance_failed_to_initialize = 'The security token object failed to initialize properly.';
+    static  $cobra_error_name_token_id_not_set = 'Token ID Not Set';
+    static  $cobra_error_desc_token_id_not_set = 'The security token object was not created, because the ID could not be set.';
 }
 ?>

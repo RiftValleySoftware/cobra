@@ -23,4 +23,7 @@ INSERT INTO co_security_nodes (login_id, access_class, last_access, read_securit
 ('asp', 'CO_Login_Manager', '1970-01-01 00:00:00', 7, 7, 'Boss COBRA Manager (asp)', 'a:2:{s:4:"lang";s:2:"en";s:15:"hashed_password";s:13:"62oAxuuttfjZI";}', '3,4,5'),
 ('king-cobra', 'CO_Login_Manager', '1970-01-01 00:00:00', 8, 8, 'Boss COBRA Manager (king)', 'a:2:{s:4:"lang";s:2:"en";s:15:"hashed_password";s:13:"62oAxuuttfjZI";}', '2,6,10'),
 ('duke', 'CO_Login_Manager', '1970-01-01 00:00:00', 9, 9, 'Daisy', 'a:2:{s:4:"lang";s:2:"en";s:15:"hashed_password";s:13:"62oAxuuttfjZI";}', '3,10'),
-('emperor', 'CO_Login_Manager', '1970-01-01 00:00:00', 10, 10, 'Me Big Chief', 'a:2:{s:4:"lang";s:2:"en";s:15:"hashed_password";s:13:"62oAxuuttfjZI";}', '2,3,4,5,6,7,8,9');
+('emperor', 'CO_Login_Manager', '1970-01-01 00:00:00', 10, 10, 'Me Big Chief', 'a:2:{s:4:"lang";s:2:"en";s:15:"hashed_password";s:13:"62oAxuuttfjZI";}', '2,3,4,5,6,7,8,9'),
+(NULL, 'CO_Security_ID', '1970-01-01 00:00:00', 11, -1, NULL, NULL, NULL),
+(NULL, 'CO_Security_ID', '1970-01-01 00:00:00', 12, -1, NULL, NULL, NULL),
+(NULL, 'CO_Security_ID', '1970-01-01 00:00:00', 13, -1, NULL, NULL, NULL);
