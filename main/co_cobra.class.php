@@ -41,6 +41,8 @@ require_once($lang_common_file);
 class CO_Cobra {
     private $_chameleon_instance = NULL;    ///< This is the CHAMELEON instance that is associated with this COBRA instance.
     
+    var $version;                           ///< The version indicator.
+    
     /***********************/
     /**
     Factory Function.
