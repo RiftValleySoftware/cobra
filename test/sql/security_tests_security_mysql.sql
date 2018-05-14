@@ -22,9 +22,9 @@ INSERT INTO `co_security_nodes` (`id`, `login_id`, `access_class`, `last_access`
 (8, 'king-cobra', 'CO_Login_Manager', '1970-01-01 00:00:00', 8, 8, 'Boss COBRA Manager (king)', 'a:2:{s:4:"lang";s:2:"en";s:15:"hashed_password";s:13:"62oAxuuttfjZI";}', '2,6,10'),
 (9, 'duke', 'CO_Login_Manager', '1970-01-01 00:00:00', 9, 9, 'Daisy', 'a:2:{s:4:"lang";s:2:"en";s:15:"hashed_password";s:13:"62oAxuuttfjZI";}', '3,10'),
 (10, 'emperor', 'CO_Login_Manager', '1970-01-01 00:00:00', 10, 10, 'Me Big Chief', 'a:2:{s:4:"lang";s:2:"en";s:15:"hashed_password";s:13:"62oAxuuttfjZI";}', '2,3,4,5,6,7,8,9'),
-(11, NULL, 'CO_Security_ID', '1970-01-01 00:00:00', 11, -1, NULL, NULL, NULL),
-(12, NULL, 'CO_Security_ID', '1970-01-01 00:00:00', 12, -1, NULL, NULL, NULL),
-(13, NULL, 'CO_Security_ID', '1970-01-01 00:00:00', 13, -1, NULL, NULL, NULL);
+(11, NULL, 'CO_Security_ID', '1970-01-01 00:00:00', 0, -1, NULL, NULL, NULL),
+(12, NULL, 'CO_Security_ID', '1970-01-01 00:00:00', 0, -1, NULL, NULL, NULL),
+(13, NULL, 'CO_Security_ID', '1970-01-01 00:00:00', 0, -1, NULL, NULL, NULL);
 
 ALTER TABLE `co_security_nodes`
   ADD PRIMARY KEY (`id`),

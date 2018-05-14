@@ -510,11 +510,11 @@ class CO_Cobra {
         $ret = 0;
         
         $manager = $this->_chameleon_instance->get_login_item();
-        if ($manager instanceof CO_Login_Manager) {
+        if ($this->_chameleon_instance->god_mode() || ($manager instanceof CO_Login_Manager)) {
             $new_token = $this->_chameleon_instance->make_new_blank_record('CO_Security_ID');
             if (isset($new_token) && ($new_token instanceof CO_Security_ID)) {
                 $new_id = $new_token->id();
-                if ($manager->add_new_login_id($new_id)) {  // We need to do the "special excemption" add of the ID to the manager.
+                if ($this->_chameleon_instance->god_mode() || $manager->add_new_login_id($new_id)) {  // We need to do the "special excemption" add of the ID to the manager.
                     $ret = $new_id;
                 } else {    // We were unable to set the new token ID to the manager.
                     $new_token->delete_from_db();
