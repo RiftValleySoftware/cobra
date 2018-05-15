@@ -21,7 +21,7 @@ function create_run_tests() {
     create_run_test(11, 'FAIL -Get Created User From COBRA', 'We log in and instantiate CHAMELEON as a manager, then attempt to see the same user; however, this time, we set the user to have an access the manager can\'t see, so it will attempt to create it. It should be noted that this manager can see the login ID, but not the user.', 'asp', NULL, 'CoreysGoryStory');
     create_run_test(12, 'FAIL -Get Created User From COBRA', 'We do it again, but this time, use a manager that can see the login (but not the user).', 'asp', NULL, 'CoreysGoryStory');
     create_run_test(13, 'PASS -Get Created User From COBRA', 'We do it again, but this time, use a manager that can see the user (but not the login).', 'king-cobra', NULL, 'CoreysGoryStory');
-    create_run_test(14, 'PASS -Create A Standard Login', 'Create a standard login from COBRA.', 'asp', NULL, 'CoreysGoryStory');
+    create_run_test(14, 'PASS -Create A Standard Login', 'Create a standard login from COBRA. However, we first try doing it with too short a password.', 'asp', NULL, 'CoreysGoryStory');
     create_run_test(15, 'FAIL -Create A Standard Login (Duplicate)', 'Create a standard login from COBRA, but use a different manager and try the same ID.', 'king-cobra', NULL, 'CoreysGoryStory');
     create_run_test(16, 'FAIL -Create A Standard Login (Duplicate)', 'Create a standard login from COBRA, but this time, we go in as God. It should also fail.', 'admin', NULL, CO_Config::$god_mode_password);
     create_run_test(17, 'PASS -Create A Manager Login', 'Create a login manager login from COBRA.', 'asp', NULL, 'CoreysGoryStory');
@@ -131,13 +131,22 @@ function create_test_14($in_login = NULL, $in_hashed_password = NULL, $in_passwo
     $cobra_instance = make_cobra($chameleon_instance);
     
     if (isset($cobra_instance) && ($cobra_instance instanceof CO_Cobra)) {
-        $new_login = $cobra_instance->create_new_standard_login('bluto', 'CoreysGoryStory');
-
-        if (isset($new_login) && ($new_login instanceof CO_Cobra_Login)) {
-            echo("<h2 style=\"color:green;font-weight:bold\">The New Login is valid!</h2>");
+        // First, try it with too short a password.
+        $new_login = $cobra_instance->create_new_standard_login('bluto', '1234567');
+        
+        if ($new_login) {
+            echo("<h2 style=\"color:red;font-weight:bold\">The Login Should not have been created!</h2>");
         } else {
-            echo("<h2 style=\"color:red;font-weight:bold\">The Login is not valid!</h2>");
+            echo("<h2 style=\"color:red;font-weight:bold\">The Login was not created, which is good.</h2>");
             echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$cobra_instance->error->error_code.') '.$cobra_instance->error->error_name.' ('.$cobra_instance->error->error_description.')</p>');
+            $new_login = $cobra_instance->create_new_standard_login('bluto', 'CoreysGoryStory');
+
+            if (isset($new_login) && ($new_login instanceof CO_Cobra_Login)) {
+                echo("<h2 style=\"color:green;font-weight:bold\">The New Login is valid!</h2>");
+            } else {
+                echo("<h2 style=\"color:red;font-weight:bold\">The Login is not valid!</h2>");
+                echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$cobra_instance->error->error_code.') '.$cobra_instance->error->error_name.' ('.$cobra_instance->error->error_description.')</p>');
+            }
         }
     }
 }

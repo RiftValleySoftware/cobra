@@ -122,27 +122,42 @@ class CO_Cobra {
                 
                 if (isset($new_login_object) && ($new_login_object instanceof CO_Cobra_Login)) {
                     $new_login_object->login_id = $in_login_id;
-                    $new_login_object->context['hashed_password'] = crypt($in_cleartext_password, strval(rand(10, 99)));
-                    if (!$new_login_object->update_db()) {
-                        $this->error = $new_login_object->error;
-                        $new_login_object->delete_from_db();
-                        $new_login_object = NULL;
-                    } else {
-                        $new_id = $new_login_object->id();
-                        $manager->add_new_login_id($new_id);
-                        if ($new_login_object->set_write_security_id($new_id)) {
-                            if ($new_login_object->set_ids($use_these_ids)) {
-                                $ret = $new_login_object;
+                    if (strlen($in_cleartext_password) >= CO_Config::$min_pw_len) {
+                        $salt = (isset($new_login_object->context) && isset($new_login_object->context['hashed_password'])) ? $new_login_object->context['hashed_password'] : NULL;
+                        
+                        if (!$salt) {
+                            $salt = sprintf("%02d", (function_exists('random_int') ? random_int(0, 99) : rand(0, 99)));
+                        }
+                        
+                        $new_login_object->context['hashed_password'] = crypt($in_cleartext_password, $salt);
+                        
+                        if (!$new_login_object->update_db()) {
+                            $this->error = $new_login_object->error;
+                            $new_login_object->delete_from_db();
+                            $new_login_object = NULL;
+                        } else {
+                            $new_id = $new_login_object->id();
+                            $manager->add_new_login_id($new_id);
+                            if ($new_login_object->set_write_security_id($new_id)) {
+                                if ($new_login_object->set_ids($use_these_ids)) {
+                                    $ret = $new_login_object;
+                                } else {
+                                    $this->error = $new_login_object->error;
+                                    $new_login_object->delete_from_db();
+                                    $new_login_object = NULL;
+                                }
                             } else {
                                 $this->error = $new_login_object->error;
                                 $new_login_object->delete_from_db();
                                 $new_login_object = NULL;
                             }
-                        } else {
-                            $this->error = $new_login_object->error;
-                            $new_login_object->delete_from_db();
-                            $new_login_object = NULL;
                         }
+                    } else {
+                        $new_login_object->delete_from_db();
+                        $new_login_object = NULL;
+                        $this->error = new LGV_Error(   CO_COBRA_Lang_Common::$cobra_error_code_password_too_short,
+                                                        CO_COBRA_Lang::$cobra_error_name_password_too_short,
+                                                        CO_COBRA_Lang::$cobra_error_desc_password_too_short);
                     }
                 } else {
                     if (isset($this->_chameleon_instance->error)) {

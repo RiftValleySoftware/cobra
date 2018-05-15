@@ -25,5 +25,6 @@ class CO_COBRA_Lang_Common {
     static  $cobra_error_code_login_error = 605;
     static  $cobra_error_code_token_instance_failed_to_initialize = 606;
     static  $cobra_error_code_token_id_not_set = 607;
+    static  $cobra_error_code_password_too_short = 608;
 }
 ?>

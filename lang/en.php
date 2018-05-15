@@ -34,5 +34,7 @@ class CO_COBRA_Lang {
     static  $cobra_error_desc_token_instance_failed_to_initialize = 'The security token object failed to initialize properly.';
     static  $cobra_error_name_token_id_not_set = 'Token ID Not Set';
     static  $cobra_error_desc_token_id_not_set = 'The security token object was not created, because the ID could not be set.';
+    static  $cobra_error_name_password_too_short = 'Password Too Short';
+    static  $cobra_error_desc_password_too_short = 'The password is too short.';
 }
 ?>
