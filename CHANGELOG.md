@@ -1,6 +1,7 @@
-**1.0.0.2002** *(TBD)*
+**1.0.0.2002** *(May 15, 2018)*
 
 - Fixed an error in the test functions script. Not a big deal, but it meant that errors were not being displayed as such.
+- Minor change in the way the throbber is displayed. This makes it more generic.
 
 **1.0.0.2001** *(May 14, 2018)*
 
