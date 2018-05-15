@@ -1,3 +1,7 @@
+**1.0.0.2002** *(TBD)*
+
+- Fixed an error in the test functions script. Not a big deal, but it meant that errors were not being displayed as such.
+
 **1.0.0.2001** *(May 14, 2018)*
 
 - Added more testing and security for the security ID class.
