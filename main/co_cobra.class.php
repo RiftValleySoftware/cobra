@@ -13,7 +13,7 @@
 */
 defined( 'LGV_ACCESS_CATCHER' ) or die ( 'Cannot Execute Directly' );	// Makes sure that this file is in the correct context.
 
-define('__COBRA_VERSION__', '1.0.0.2002');
+define('__COBRA_VERSION__', '1.0.0.2003');
 
 require_once(CO_Config::chameleon_main_class_dir().'/co_chameleon.class.php');
 
@@ -206,6 +206,7 @@ class CO_Cobra {
         
             if ($user) {
                 if (!isset($user->error)) {
+                    $user->set_read_security_id(1); // Users default to 1 (only logged-in users can see).
                     $user->set_write_security_id($this->_chameleon_instance->get_login_item()->id()); // Make sure that only we can modify this record.
                     if (isset($user->error)) {
                         $this->error = $user->error;
