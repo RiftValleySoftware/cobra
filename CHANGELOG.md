@@ -2,6 +2,8 @@
 
 - Fixed an error in the test functions script. Not a big deal, but it meant that errors were not being displayed as such.
 - Minor change in the way the throbber is displayed. This makes it more generic.
+- Now do a "cascaded" include of localization files.
+- Fixed a couple of bugs in creating users when logged in as "God."
 
 **1.0.0.2001** *(May 14, 2018)*
 

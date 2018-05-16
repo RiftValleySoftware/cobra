@@ -201,7 +201,7 @@ class CO_Cobra {
     public function make_standalone_user() {
         $user = NULL;
         
-        if ($this->_chameleon_instance->get_login_item() instanceof CO_Login_Manager) {     // We have to be a manager to create a user.
+        if ($this->_chameleon_instance->god_mode() || ($this->_chameleon_instance->get_login_item() instanceof CO_Login_Manager)) {     // We have to be a manager to create a user.
             $user = $this->_chameleon_instance->make_new_blank_record('CO_User_Collection');
         
             if ($user) {
@@ -259,7 +259,7 @@ class CO_Cobra {
                                         ) {
         $user = $this->_chameleon_instance->get_user_from_login($in_login_id);   // First, see if it's already a thing.
         
-        if (!$user && $in_make_user_if_necessary && ($this->_chameleon_instance->get_login_item() instanceof CO_Login_Manager)) {   // If not, we will create a new one, based on the given login. We must be a manager.
+        if (!$user && $in_make_user_if_necessary && ($this->_chameleon_instance->god_mode() || ($this->_chameleon_instance->get_login_item() instanceof CO_Login_Manager))) {   // If not, we will create a new one, based on the given login. We must be a manager.
             if (isset($in_login_id) && (0 < intval($in_login_id))) {    // See if they seek a different login.
                 $login_id = intval($in_login_id);
             }
