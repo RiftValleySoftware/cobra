@@ -222,13 +222,20 @@ class CO_Cobra {
     
     /***********************/
     /**
+    This returns the login instance for the given ID string.
+    
+    This is scurity-vetted. The current login needs to be able to see the item.
+    
+    \returns the Login Item. NULL if unable to fetch the item.
      */
-    public function get_login_instance( $in_login_id    ///< The login ID that we are referencing.
+    public function get_login_instance( $in_login_id    ///< The string login ID that we are referencing.
                                         ) {
         $ret = NULL;
         
         if (isset($in_login_id) && $in_login_id) {
             $ret = $this->_chameleon_instance->get_login_item_by_login_string($in_login_id);
+            
+            $this->error = $this->_chameleon_instance->error;
         }
         
         return $ret;
@@ -242,7 +249,7 @@ class CO_Cobra {
     
     \returns an instance of a user collection. If new, it will be blank.
      */
-    public function get_user_from_login(    $in_login_id = NULL,                ///< The login ID that is associated with the user collection. If NULL, then the current login is used.
+    public function get_user_from_login(    $in_login_id = NULL,                ///< The integer login ID that is associated with the user collection. If NULL, then the current login is used.
                                             $in_make_user_if_necessary = FALSE  ///< If TRUE (Default is FALSE), then the user will be created if it does not already exist. Ignored, if we are not a Login Manager.
                                         ) {
         $user = $this->_chameleon_instance->get_user_from_login($in_login_id);   // First, see if it's already a thing.
@@ -324,7 +331,7 @@ class CO_Cobra {
     
     \returns the new CO_Login_Manager instance.
      */
-    public function create_new_manager_login(  $in_login_id,                   ///< The login ID as text. It needs to be unique, within the Security database, and this will fail, if it is not.
+    public function create_new_manager_login(   $in_login_id,                   ///< The login ID as text. It needs to be unique, within the Security database, and this will fail, if it is not.
                                                 $in_cleartext_password,         ///< The password to set (in cleartext). It will be stored as a hashed password.
                                                 $in_security_token_ids = NULL   ///< An array of integers. These are security token IDs for the login (default is NULL). If NULL, then no IDs will be set. These IDs must be selected from those available to the currently logged-in manager.
                                             ) {
