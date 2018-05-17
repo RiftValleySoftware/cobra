@@ -1,3 +1,13 @@
+**1.0.0.2004** *(May 17, 2018)*
+
+- Sequestered the configuration God Mode password.
+- Included new CHAMELEON.
+- Changed the tests to accommodate the new "write trumps read" permissions.
+
+**1.0.0.2003** *(May 16, 2018)*
+
+- Included new CHAMELEON.
+
 **1.0.0.2002** *(May 15, 2018)*
 
 - Fixed an error in the test functions script. Not a big deal, but it meant that errors were not being displayed as such.
