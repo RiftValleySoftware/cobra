@@ -51,7 +51,7 @@
         
         if (isset($cobra_instance) && ($cobra_instance instanceof CO_Cobra)) {
             echo("<h2 style=\"color:green;\">The COBRA instance is valid!</h2>");
-        } elseif (isset($cobra_instance) && ($cobra_instance->error instanceof LGV_Error)) {
+        } elseif (isset($cobra_instance) && isset($cobra_instance->error) && ($cobra_instance->error instanceof LGV_Error)) {
             echo("<h2 style=\"color:red;font-weight:bold\">The COBRA instance is not valid!</h2>");
             echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$cobra_instance->error->error_code.') '.$cobra_instance->error->error_name.' ('.$cobra_instance->error->error_description.')</p>');
         } else {

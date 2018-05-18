@@ -32,6 +32,37 @@ class CO_Login_Manager extends CO_Cobra_Login {
 	                            ) {
         parent::__construct($in_login_id, $in_hashed_password, $in_raw_password);
         $this->_added_new_id = NULL;
+        $this->class_description = 'This is a security class for login managers.';
+        if (intval($this->id()) == intval(CO_Config::god_mode_id())) {
+            // God Mode is always forced to use the config password.
+            $this->context['hashed_password'] = bin2hex(openssl_random_pseudo_bytes(4));    // Just create a randomish junk password. It will never be used.
+            $this->instance_description = 'GOD MODE: '.(isset($this->name) && $this->name ? "$this->name (".$this->login_id.")" : "Unnamed Login Manager Node (".$this->login_id.")");
+        } else {
+            $this->instance_description = isset($this->name) && $this->name ? "$this->name (".$this->login_id.")" : "Unnamed Login Manager Node (".$this->login_id.")";
+        }
+    }
+
+    /***********************/
+    /**
+    This function sets up this instance, according to the DB-formatted associative array passed in.
+    
+    \returns TRUE, if the instance was able to set itself up to the provided array.
+     */
+    public function load_from_db($in_db_result) {
+        $ret = parent::load_from_db($in_db_result);
+        
+        if ($ret) {
+            $this->class_description = 'This is a security class for login managers.';
+            if (intval($this->id()) == intval(CO_Config::god_mode_id())) {
+                // God Mode is always forced to use the config password.
+                $this->context['hashed_password'] = bin2hex(openssl_random_pseudo_bytes(4));    // Just create a randomish junk password. It will never be used.
+                $this->instance_description = 'GOD MODE: '.(isset($this->name) && $this->name ? "$this->name (".$this->login_id.")" : "Unnamed Login Manager Node (".$this->login_id.")");
+            } else {
+                $this->instance_description = isset($this->name) && $this->name ? "$this->name (".$this->login_id.")" : "Unnamed Login Manager Node (".$this->login_id.")";
+            }
+        }
+        
+        return $ret;
     }
     
     /***********************/

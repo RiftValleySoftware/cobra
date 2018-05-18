@@ -33,6 +33,13 @@ class CO_Cobra_Login extends CO_Security_Login {
 	                            ) {
         parent::__construct($in_login_id, $in_hashed_password, $in_raw_password);
         $this->_special_first_time_security_exemption = TRUE;
+        if (intval($this->id()) == intval(CO_Config::god_mode_id())) {
+            // God Mode is always forced to use the config password.
+            $this->context['hashed_password'] = bin2hex(openssl_random_pseudo_bytes(4));    // Just create a randomish junk password. It will never be used.
+            $this->instance_description = 'GOD MODE: '.(isset($this->name) && $this->name ? "$this->name (".$this->login_id.")" : "Unnamed Standard Login Node (".$this->login_id.")");
+        } else {
+            $this->instance_description = isset($this->name) && $this->name ? "$this->name (".$this->login_id.")" : "Unnamed Standard Login Node (".$this->login_id.")";
+        }
     }
     
     /***********************/
@@ -57,6 +64,29 @@ class CO_Cobra_Login extends CO_Security_Login {
                 if (isset($ids) && is_array($ids) && count($ids)) {
                     $ret = in_array($my_write_item, $ids);
                 }
+            }
+        }
+        
+        return $ret;
+    }
+
+    /***********************/
+    /**
+    This function sets up this instance, according to the DB-formatted associative array passed in.
+    
+    \returns TRUE, if the instance was able to set itself up to the provided array.
+     */
+    public function load_from_db($in_db_result) {
+        $ret = parent::load_from_db($in_db_result);
+        
+        if ($ret) {
+            $this->class_description = 'This is a security class for standard logins.';
+            if (intval($this->id()) == intval(CO_Config::god_mode_id())) {
+                // God Mode is always forced to use the config password.
+                $this->context['hashed_password'] = bin2hex(openssl_random_pseudo_bytes(4));    // Just create a randomish junk password. It will never be used.
+                $this->instance_description = 'GOD MODE: '.(isset($this->name) && $this->name ? "$this->name (".$this->login_id.")" : "Unnamed Standard Login Node (".$this->login_id.")");
+            } else {
+                $this->instance_description = isset($this->name) && $this->name ? "$this->name (".$this->login_id.")" : "Unnamed Standard Login Node (".$this->login_id.")";
             }
         }
         

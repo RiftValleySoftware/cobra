@@ -1,6 +1,7 @@
 **1.0.0.2005** *(May 18, 2018)*
 
 - Added new CHAMELEON, with Security DB fix.
+- Fixed an error in the tests.
 
 **1.0.0.2004** *(May 17, 2018)*
 
