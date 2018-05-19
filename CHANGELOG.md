@@ -1,6 +1,6 @@
 **1.0.0.2006** *(May 19, 2018)*
 
-- Added latest CHAMELEON, with modified user and cplace collection classes.
+- Added latest CHAMELEON, with modified user and place collection classes.
 
 **1.0.0.2005** *(May 18, 2018)*
 
