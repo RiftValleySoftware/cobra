@@ -13,7 +13,7 @@
 */
 defined( 'LGV_ACCESS_CATCHER' ) or die ( 'Cannot Execute Directly' );	// Makes sure that this file is in the correct context.
 
-define('__COBRA_VERSION__', '1.0.0.2005');
+define('__COBRA_VERSION__', '1.0.0.2006');
 
 require_once(CO_Config::chameleon_main_class_dir().'/co_chameleon.class.php');
 
@@ -258,7 +258,6 @@ class CO_Cobra {
             if (isset($in_login_id) && (0 < intval($in_login_id))) {    // See if they seek a different login.
                 $login_id = intval($in_login_id);
             }
-            
             // Assuming all is well, we need to create a new user. We have to be a login manager to do this.
             if (isset($in_login_id) && (0 < intval($in_login_id))) {
                 $login_item = $this->_chameleon_instance->get_login_item($in_login_id);
