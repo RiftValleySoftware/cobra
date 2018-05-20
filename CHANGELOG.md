@@ -1,3 +1,7 @@
+**1.0.0.2007** *(May 20, 2018)*
+
+- Added latest CHAMELEON/BADGER, with modified generic search.
+
 **1.0.0.2006** *(May 19, 2018)*
 
 - Added latest CHAMELEON, with modified user and place collection classes.
