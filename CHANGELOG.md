@@ -1,4 +1,4 @@
-**1.0.0.2008** *(May 22, 2018)*
+**1.0.0.2008** *(May 23, 2018)*
 
 - Updated latest CHAMELEON/BADGER.
 
