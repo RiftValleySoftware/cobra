@@ -1,3 +1,7 @@
+**1.0.0.2011** *(TBD)*
+
+- Updated latest CHAMELEON/BADGER.
+
 **1.0.0.2010** *(May 26, 2018)*
 
 - Updated latest CHAMELEON/BADGER.
