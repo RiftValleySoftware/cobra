@@ -1,7 +1,14 @@
-![HISSSSS!](icon.png)
+![COBRA](images/icon.png)
+
+COBRA
+======
+Part of the Rift Valley Platform
+--------------------------------
+![Rift Valley Platform](images/RVPLogo.png)
 
 INTRODUCTION
 ============
+![COBRA](images/COBRALayers.png)
 
 COBRA is a security administration toolset for the Rift Valley Platform (RVP).
 
@@ -12,7 +19,7 @@ COBRA will allow a manager to create and delete logins, as well as manage securi
 LICENSE
 =======
 
-![Little Green Viper Software Development LLC](spec/viper.png)
+![Little Green Viper Software Development LLC](images/viper.png)
 © Copyright 2018, [Little Green Viper Software Development LLC](https://littlegreenviper.com).
 This code is ENTIRELY proprietary and not to be reused, unless under specific, written license from [Little Green Viper Software Development LLC](https://littlegreenviper.com).
 
