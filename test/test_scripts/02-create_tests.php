@@ -23,7 +23,7 @@ function create_run_tests() {
     create_run_test(13, 'PASS -Get Created User From COBRA', 'We do it again, but this time, use a manager that can see the user (but not the login).', 'king-cobra', NULL, 'CoreysGoryStory');
     create_run_test(14, 'FAIL -Create A Standard Login', 'Create a standard login from COBRA. However, we first try doing it with too short a password.', 'asp', NULL, 'CoreysGoryStory');
     create_run_test(15, 'FAIL -Create A Standard Login (Duplicate)', 'Create a standard login from COBRA, but use a different manager and try the same ID.', 'king-cobra', NULL, 'CoreysGoryStory');
-    create_run_test(16, 'FAIL -Create A Standard Login (Duplicate)', 'Create a standard login from COBRA, but this time, we go in as God. It should also fail.', 'admin', NULL, CO_COnfig::god_mode_password());
+    create_run_test(16, 'FAIL -Create A Standard Login (Duplicate)', 'Create a standard login from COBRA, but this time, we go in as God. It should also fail.', 'admin', NULL, CO_Config::god_mode_password());
     create_run_test(17, 'PASS -Create A Manager Login', 'Create a login manager login from COBRA.', 'asp', NULL, 'CoreysGoryStory');
     create_run_test(18, 'PASS -Create Another Manager Login', 'Using the manager we just created, create another manager login.', 'beavis', NULL, 'CoreysGoryStory');
     create_run_test(19, 'PASS -Create Another Standard Login', 'Using the manager we just created, create another standard login.', 'butthead', NULL, 'CoreysGoryStory');
@@ -73,7 +73,7 @@ function create_test_10($in_login = NULL, $in_hashed_password = NULL, $in_passwo
 }
 
 function create_test_11($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
-    $chameleon_instance = make_chameleon('admin', '', CO_COnfig::god_mode_password());
+    $chameleon_instance = make_chameleon('admin', '', CO_Config::god_mode_password());
     $cobra_instance = make_cobra($chameleon_instance);
     
     if (isset($cobra_instance) && ($cobra_instance instanceof CO_Cobra)) {

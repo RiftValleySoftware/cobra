@@ -23,7 +23,7 @@ function instance_run_tests() {
     instance_run_test(5, 'FAIL -Weed Lizard Test', 'We just create a COBRA instance, give it a valid, non-cobra-level-user-logged-in CHAMELEON, and make sure it is NOT valid.', 'norm', NULL, 'CoreysGoryStory');
     instance_run_test(6, 'FAIL -Garden-Variety Lizard Test', 'We just create a COBRA instance, give it a valid, standard-user-logged-in CHAMELEON, and make sure it is NOT valid.', 'krait', NULL, 'CoreysGoryStory');
     instance_run_test(7, 'PASS -Big Lizard Test', 'We just create a COBRA instance, give it a valid, manager-user-logged-in CHAMELEON, and make sure it is valid.', 'king-cobra', NULL, 'CoreysGoryStory');
-    instance_run_test(8, 'PASS -God Lizard Test', 'We just create a COBRA instance, give it a valid, God-logged-in CHAMELEON, and make sure it is valid.', 'admin', NULL, CO_COnfig::god_mode_password());
+    instance_run_test(8, 'PASS -God Lizard Test', 'We just create a COBRA instance, give it a valid, God-logged-in CHAMELEON, and make sure it is valid.', 'admin', NULL, CO_Config::god_mode_password());
 }
 
 // -------------------------------- TESTS ---------------------------------------------
