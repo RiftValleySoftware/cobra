@@ -18,6 +18,10 @@ It is a standalone class that is instantiated with a logged-in CHAMELEON instanc
 
 COBRA will allow a manager to create and delete logins, as well as manage security tokens.
 
+\ref CHAMELEON is the "First Layer Abstraction" from the data storage and retrieval. It implements a few higher-level capabilities, such as collections, users and places.
+
+\ref BADGER is the "First Layer Connection" to the data storage subsystem. It uses [PHP PDO](http://php.net/manual/en/book.pdo.php) to abstract from the databases, and provide SQL-injection protection through the use of [PHP PDO Prepared Statements](http://php.net/manual/en/pdo.prepared-statements.php).
+
 LICENSE
 =======
 
