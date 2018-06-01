@@ -73,7 +73,7 @@ function analysis_test_32($in_login = NULL, $in_hashed_password = NULL, $in_pass
     $cobra_instance = make_cobra($chameleon_instance);
     
     if (isset($cobra_instance) && ($cobra_instance instanceof CO_Cobra)) {
-        $visible_logins = $cobra_instance->get_all_logins(FALSE, 'king-cobra');
+        $visible_logins = $cobra_instance->get_all_logins(false, 'king-cobra');
         
         if (isset($visible_logins) && is_array($visible_logins) && count($visible_logins)) {
             foreach ($visible_logins as $record) {
@@ -88,7 +88,7 @@ function analysis_test_33($in_login = NULL, $in_hashed_password = NULL, $in_pass
     $cobra_instance = make_cobra($chameleon_instance);
     
     if (isset($cobra_instance) && ($cobra_instance instanceof CO_Cobra)) {
-        $visible_logins = $cobra_instance->get_all_logins(FALSE, 'asp');
+        $visible_logins = $cobra_instance->get_all_logins(false, 'asp');
         
         if (isset($visible_logins) && is_array($visible_logins) && count($visible_logins)) {
             foreach ($visible_logins as $record) {
@@ -103,7 +103,7 @@ function analysis_test_34($in_login = NULL, $in_hashed_password = NULL, $in_pass
     $cobra_instance = make_cobra($chameleon_instance);
     
     if (isset($cobra_instance) && ($cobra_instance instanceof CO_Cobra)) {
-        $visible_logins = $cobra_instance->get_all_logins(TRUE);
+        $visible_logins = $cobra_instance->get_all_logins(true);
         
         if (isset($visible_logins) && is_array($visible_logins) && count($visible_logins)) {
             foreach ($visible_logins as $record) {
@@ -126,7 +126,7 @@ function analysis_test_37($in_login = NULL, $in_hashed_password = NULL, $in_pass
     $cobra_instance = make_cobra($chameleon_instance);
     
     if (isset($cobra_instance) && ($cobra_instance instanceof CO_Cobra)) {
-        $visible_logins = $cobra_instance->get_all_logins(TRUE, 'king-cobra');
+        $visible_logins = $cobra_instance->get_all_logins(true, 'king-cobra');
         
         if (isset($visible_logins) && is_array($visible_logins) && count($visible_logins)) {
             foreach ($visible_logins as $record) {
@@ -141,7 +141,7 @@ function analysis_test_38($in_login = NULL, $in_hashed_password = NULL, $in_pass
     $cobra_instance = make_cobra($chameleon_instance);
     
     if (isset($cobra_instance) && ($cobra_instance instanceof CO_Cobra)) {
-        $visible_logins = $cobra_instance->get_all_logins(TRUE, 'asp');
+        $visible_logins = $cobra_instance->get_all_logins(true, 'asp');
         
         if (isset($visible_logins) && is_array($visible_logins) && count($visible_logins)) {
             foreach ($visible_logins as $record) {
@@ -172,7 +172,7 @@ function analysis_test_43($in_login = NULL, $in_hashed_password = NULL, $in_pass
     $cobra_instance = make_cobra($chameleon_instance);
     
     if (isset($cobra_instance) && ($cobra_instance instanceof CO_Cobra)) {
-        $visible_logins = $cobra_instance->get_all_logins(FALSE, 'cobra');
+        $visible_logins = $cobra_instance->get_all_logins(false, 'cobra');
         
         if (isset($visible_logins) && is_array($visible_logins) && count($visible_logins)) {
             foreach ($visible_logins as $record) {
@@ -187,7 +187,7 @@ function analysis_test_44($in_login = NULL, $in_hashed_password = NULL, $in_pass
     $cobra_instance = make_cobra($chameleon_instance);
     
     if (isset($cobra_instance) && ($cobra_instance instanceof CO_Cobra)) {
-        $visible_logins = $cobra_instance->get_all_logins(FALSE, 'krait');
+        $visible_logins = $cobra_instance->get_all_logins(false, 'krait');
         
         if (isset($visible_logins) && is_array($visible_logins) && count($visible_logins)) {
             foreach ($visible_logins as $record) {
@@ -202,7 +202,7 @@ function analysis_test_45($in_login = NULL, $in_hashed_password = NULL, $in_pass
     $cobra_instance = make_cobra($chameleon_instance);
     
     if (isset($cobra_instance) && ($cobra_instance instanceof CO_Cobra)) {
-        $visible_logins = $cobra_instance->get_all_logins(TRUE, 'cobra');
+        $visible_logins = $cobra_instance->get_all_logins(true, 'cobra');
         
         if (isset($visible_logins) && is_array($visible_logins) && count($visible_logins)) {
             foreach ($visible_logins as $record) {
@@ -217,7 +217,7 @@ function analysis_test_46($in_login = NULL, $in_hashed_password = NULL, $in_pass
     $cobra_instance = make_cobra($chameleon_instance);
     
     if (isset($cobra_instance) && ($cobra_instance instanceof CO_Cobra)) {
-        $visible_logins = $cobra_instance->get_all_logins(TRUE, 'krait');
+        $visible_logins = $cobra_instance->get_all_logins(true, 'krait');
         
         if (isset($visible_logins) && is_array($visible_logins) && count($visible_logins)) {
             foreach ($visible_logins as $record) {
@@ -236,7 +236,7 @@ function analysis_test_48($in_login = NULL, $in_hashed_password = NULL, $in_pass
     $cobra_instance = make_cobra($chameleon_instance);
     
     if (isset($cobra_instance) && ($cobra_instance instanceof CO_Cobra)) {
-        $visible_logins = $cobra_instance->get_all_logins(FALSE, 'norm');
+        $visible_logins = $cobra_instance->get_all_logins(false, 'norm');
         
         if (isset($visible_logins) && is_array($visible_logins) && count($visible_logins)) {
             foreach ($visible_logins as $record) {
@@ -275,7 +275,7 @@ function analysis_test_52($in_login = NULL, $in_hashed_password = NULL, $in_pass
     
     if (isset($cobra_instance) && ($cobra_instance instanceof CO_Cobra)) {
         $norm_login = $chameleon_instance->get_login_item_by_login_string('norm');
-        $can_modify = $cobra_instance->who_can_modify($norm_login, TRUE);
+        $can_modify = $cobra_instance->who_can_modify($norm_login, true);
         if (isset($can_modify) && is_array($can_modify) && count($can_modify)) {
             foreach ($can_modify as $record) {
                 hierarchicalDisplayRecord($record);
@@ -290,7 +290,7 @@ function analysis_test_53($in_login = NULL, $in_hashed_password = NULL, $in_pass
     
     if (isset($cobra_instance) && ($cobra_instance instanceof CO_Cobra)) {
         $norm_login = $chameleon_instance->get_login_item_by_login_string('asp');
-        $can_modify = $cobra_instance->who_can_modify($norm_login, TRUE);
+        $can_modify = $cobra_instance->who_can_modify($norm_login, true);
         if (isset($can_modify) && is_array($can_modify) && count($can_modify)) {
             foreach ($can_modify as $record) {
                 hierarchicalDisplayRecord($record);
@@ -309,10 +309,10 @@ function analysis_run_test($in_num, $in_title, $in_explain, $in_login = NULL, $i
             echo('<div class="main_div" style="margin-right:2em">');
                 echo('<p class="explain">'.$in_explain.'</p>');
             echo('</div>');
-            $st1 = microtime(TRUE);
+            $st1 = microtime(true);
             $function_name = sprintf('analysis_test_%02d', $in_num);
             $function_name($in_login, $in_hashed_password, $in_password);
-            $fetchTime = sprintf('%01.3f', microtime(TRUE) - $st1);
+            $fetchTime = sprintf('%01.3f', microtime(true) - $st1);
             echo("<h4>The test took $fetchTime seconds to complete.</h4>");
         echo('</div>');
     echo('</div>');
@@ -328,11 +328,11 @@ ob_start();
             echo('<div class="container">');
                 echo('<p class="explain">In these tests, we check which logins various users can see.</p>');
             
-                $start = microtime(TRUE);
+                $start = microtime(true);
                 
                 analysis_run_tests_1();
                 
-                echo('<h5>The entire set of tests took '. sprintf('%01.3f', microtime(TRUE) - $start) . ' seconds to complete.</h5>');
+                echo('<h5>The entire set of tests took '. sprintf('%01.3f', microtime(true) - $start) . ' seconds to complete.</h5>');
                 
             echo('</div>');
         echo('</div>');

@@ -32,7 +32,7 @@ class CO_Cobra_Login extends CO_Security_Login {
                                     $in_raw_password = NULL     ///< The password, cleartext.
 	                            ) {
         parent::__construct($in_login_id, $in_hashed_password, $in_raw_password);
-        $this->_special_first_time_security_exemption = TRUE;
+        $this->_special_first_time_security_exemption = true;
         if (intval($this->id()) == intval(CO_Config::god_mode_id())) {
             // God Mode is always forced to use the config password.
             $this->context['hashed_password'] = bin2hex(openssl_random_pseudo_bytes(4));    // Just create a randomish junk password. It will never be used.
@@ -46,7 +46,7 @@ class CO_Cobra_Login extends CO_Security_Login {
     /**
     A user cannot change their own ID list.
     
-    \returns TRUE, if the current logged-in user can edit IDs for this login.
+    \returns true, if the current logged-in user can edit IDs for this login.
      */
     public function user_can_edit_ids() {
         $ret = parent::user_can_edit_ids();
@@ -74,7 +74,7 @@ class CO_Cobra_Login extends CO_Security_Login {
     /**
     This function sets up this instance, according to the DB-formatted associative array passed in.
     
-    \returns TRUE, if the instance was able to set itself up to the provided array.
+    \returns true, if the instance was able to set itself up to the provided array.
      */
     public function load_from_db($in_db_result) {
         $ret = parent::load_from_db($in_db_result);
@@ -98,11 +98,11 @@ class CO_Cobra_Login extends CO_Security_Login {
     This weird little function allows a creator to once -and only once- add an ID to itself, as long as that ID is for this object.
     This is a "Heisenberg" query. Once it's called, the security exemption is gone.
     
-    returns TRUE, if the security exemption was on.
+    returns true, if the security exemption was on.
      */
     public function security_exemption() {
         $ret = $this->_special_first_time_security_exemption;
-        $this->_special_first_time_security_exemption = FALSE;
+        $this->_special_first_time_security_exemption = false;
         
         return $ret;
     }

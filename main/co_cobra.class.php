@@ -84,7 +84,7 @@ class CO_Cobra {
     protected function _create_new_login(   $in_login_id,                   ///< The login ID as text. It needs to be unique, within the Security database, and this will fail, if it is not.
                                             $in_cleartext_password,         ///< The password to set (in cleartext). It will be stored as a hashed password.
                                             $in_security_token_ids = NULL,  ///< An array of integers. These are security token IDs for the login (default is NULL). If NULL, then no IDs will be set. These IDs must be selected from those available to the currently logged-in manager.
-                                            $in_is_login_manager = FALSE    ///< TRUE, if we want a CO_Login_Manager instance, instead of a CO_Cobra_Login instance. Default is FALSE.
+                                            $in_is_login_manager = false    ///< true, if we want a CO_Login_Manager instance, instead of a CO_Cobra_Login instance. Default is false.
                                         ) {
         $ret = NULL;
         
@@ -245,12 +245,12 @@ class CO_Cobra {
     /**
     This fetches a user from a given login ID.
     
-    The user may be created, if the current login is a Login Manager, and the second parameter is set to TRUE.
+    The user may be created, if the current login is a Login Manager, and the second parameter is set to true.
     
     \returns an instance of a user collection. If new, it will be blank.
      */
     public function get_user_from_login(    $in_login_id = NULL,                ///< The integer login ID that is associated with the user collection. If NULL, then the current login is used.
-                                            $in_make_user_if_necessary = FALSE  ///< If TRUE (Default is FALSE), then the user will be created if it does not already exist. Ignored, if we are not a Login Manager.
+                                            $in_make_user_if_necessary = false  ///< If true (Default is false), then the user will be created if it does not already exist. Ignored, if we are not a Login Manager.
                                         ) {
         $user = $this->_chameleon_instance->get_user_from_login($in_login_id);   // First, see if it's already a thing.
         
@@ -334,7 +334,7 @@ class CO_Cobra {
                                                 $in_cleartext_password,         ///< The password to set (in cleartext). It will be stored as a hashed password.
                                                 $in_security_token_ids = NULL   ///< An array of integers. These are security token IDs for the login (default is NULL). If NULL, then no IDs will be set. These IDs must be selected from those available to the currently logged-in manager.
                                             ) {
-        return $this->_create_new_login($in_login_id, $in_cleartext_password, $in_security_token_ids, TRUE);
+        return $this->_create_new_login($in_login_id, $in_cleartext_password, $in_security_token_ids, true);
     }
     
     /***********************/
@@ -343,12 +343,12 @@ class CO_Cobra {
     When we delete a login, it actually gets changed into a security ID instance (to reserve the ID slot), however, the user object is actually removed.
     It should be noted that deleting a (user) collection does not delete everything in the collection; only the collection object, itself.
     
-    \returns TRUE, if the operation (or operations) succeeded.
+    \returns true, if the operation (or operations) succeeded.
      */
     public function delete_login(   $in_login_id,               ///< The login ID as text.
-                                    $also_delete_user = FALSE   ///< If TRUE (Default is FALSE), then we will also delete the user record associated with this login.
+                                    $also_delete_user = false   ///< If true (Default is false), then we will also delete the user record associated with this login.
                                 ) {
-        $ret = FALSE;
+        $ret = false;
         
         $cobra_login_instance = $this->get_login_instance($in_login_id);
         
@@ -373,7 +373,7 @@ class CO_Cobra {
     /**
     \returns an array of instances of all the logins that are visible to the current user (or a supplied user, if in "God" mode).
      */
-    public function get_all_logins( $and_write = FALSE,         ///< If TRUE, then we only want ones we have write access to.
+    public function get_all_logins( $and_write = false,         ///< If true, then we only want ones we have write access to.
                                     $in_login_id = NULL,        ///< This is ignored, unless this is the God login. If We are logged in as God, then we can select a login via its string login ID, and see what logins are available to it.
                                     $in_login_integer_id = NULL ///< This is ignored, unless this is the God login and $in_login_id is not specified. If We are logged in as God, then we can select a login via its integer login ID, and see what logins are available to it.
                                     ) {
@@ -441,11 +441,11 @@ class CO_Cobra {
     
     This is security-limited.
     
-    \returns an array of instances of CO_Security_Login (Security Database login) items that can read/see the given item. If the read ID is 0 (open), then the function simply returns TRUE. If nothing can see the item, then FALSE is returned.
+    \returns an array of instances of CO_Security_Login (Security Database login) items that can read/see the given item. If the read ID is 0 (open), then the function simply returns true. If nothing can see the item, then false is returned.
      */
     public function who_can_see(    $in_test_target ///< This is a subclass of A_CO_DB_Table_Base (General Database Record).
                                 ) {
-        $ret = FALSE;
+        $ret = false;
         
         if (isset($in_test_target) && ($in_test_target instanceof A_CO_DB_Table_Base)) {
             $id = intval($in_test_target->read_security_id);
@@ -453,10 +453,10 @@ class CO_Cobra {
             if (0 < $id) {
                 $ret = $this->_chameleon_instance->get_all_login_objects_with_access($id);
                 if (!isset($ret) || !is_array($ret) || !count($ret)) {
-                    $ret = FALSE;
+                    $ret = false;
                 }
             } elseif (0 == $id) {
-                $ret = TRUE;
+                $ret = true;
             }
         }
         
@@ -469,22 +469,22 @@ class CO_Cobra {
     
     This is security-limited.
     
-    \returns an array of instances of CO_Security_Login (Security Database login) items that can modify the given item. If the write ID is 0 (open), then the function simply returns TRUE. If nothing can modify the item, then FALSE is returned.
+    \returns an array of instances of CO_Security_Login (Security Database login) items that can modify the given item. If the write ID is 0 (open), then the function simply returns true. If nothing can modify the item, then false is returned.
      */
     public function who_can_modify( $in_test_target,            ///< This is a subclass of A_CO_DB_Table_Base (General Database Record).
-                                    $non_managers_only = FALSE  /**< Ignored if the target is not an instance (or subclass) of CO_Security_Login.
-                                                                     If TRUE (default is FALSE), then only login manager objects will be returned.
+                                    $non_managers_only = false  /**< Ignored if the target is not an instance (or subclass) of CO_Security_Login.
+                                                                     If true (default is false), then only login manager objects will be returned.
                                                                      If you supply a login object as the target, this is a quick way to see if any non-manager objects can modify it.
                                                                      In reality, there should be no non-manager objects that can modify a login, besides the login, itself.
                                                                 */
                                     ) {
-        $ret = FALSE;
+        $ret = false;
         
         if (isset($in_test_target) && ($in_test_target instanceof A_CO_DB_Table_Base)) {
             $id = intval($in_test_target->write_security_id);
             
             if (0 < $id) {
-                $ret = $this->_chameleon_instance->get_all_login_objects_with_access($id, TRUE);
+                $ret = $this->_chameleon_instance->get_all_login_objects_with_access($id, true);
                 // Check to see if any non-manager objects can modify the login (should never be).
                 if (($in_test_target instanceof CO_Security_Login) && isset($ret) && is_array($ret) && $non_managers_only) {
                     $ret_temp = Array();
@@ -497,13 +497,13 @@ class CO_Cobra {
                     if (count($ret_temp)) {
                         $ret = $ret_temp;
                     } else {
-                        $ret = FALSE;
+                        $ret = false;
                     }
                 } elseif (!isset($ret) || !is_array($ret) || !count($ret)) {
-                    $ret = FALSE;
+                    $ret = false;
                 }
             } elseif (0 == $id) {
-                $ret = TRUE;
+                $ret = true;
             }
         }
         

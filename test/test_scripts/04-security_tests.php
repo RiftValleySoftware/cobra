@@ -124,10 +124,10 @@ function security_run_test($in_num, $in_title, $in_explain, $in_login = NULL, $i
             echo('<div class="main_div" style="margin-right:2em">');
                 echo('<p class="explain">'.$in_explain.'</p>');
             echo('</div>');
-            $st1 = microtime(TRUE);
+            $st1 = microtime(true);
             $function_name = sprintf('security_test_%02d', $in_num);
             $function_name($in_login, $in_hashed_password, $in_password);
-            $fetchTime = sprintf('%01.3f', microtime(TRUE) - $st1);
+            $fetchTime = sprintf('%01.3f', microtime(true) - $st1);
             echo("<h4>The test took $fetchTime seconds to complete.</h4>");
         echo('</div>');
     echo('</div>');
@@ -143,11 +143,11 @@ ob_start();
             echo('<div class="container">');
                 echo('<p class="explain"></p>');
             
-                $start = microtime(TRUE);
+                $start = microtime(true);
                 
                 security_run_tests_1();
                 
-                echo('<h5>The entire set of tests took '. sprintf('%01.3f', microtime(TRUE) - $start) . ' seconds to complete.</h5>');
+                echo('<h5>The entire set of tests took '. sprintf('%01.3f', microtime(true) - $start) . ' seconds to complete.</h5>');
                 
             echo('</div>');
         echo('</div>');

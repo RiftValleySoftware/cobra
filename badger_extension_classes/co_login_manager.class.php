@@ -46,7 +46,7 @@ class CO_Login_Manager extends CO_Cobra_Login {
     /**
     This function sets up this instance, according to the DB-formatted associative array passed in.
     
-    \returns TRUE, if the instance was able to set itself up to the provided array.
+    \returns true, if the instance was able to set itself up to the provided array.
      */
     public function load_from_db($in_db_result) {
         $ret = parent::load_from_db($in_db_result);
@@ -70,7 +70,7 @@ class CO_Login_Manager extends CO_Cobra_Login {
     This allows us to add one single ID to our list.
     We set our ephemeral ID, then we add the ID, which should pass, just this once.
     
-    \returns TRUE, if the operation succeeded.
+    \returns true, if the operation succeeded.
      */
     public function add_new_login_id(   $in_login_id    ///< The integer ID of the new login item.
                                     ) {
@@ -84,7 +84,7 @@ class CO_Login_Manager extends CO_Cobra_Login {
     /**
     A user cannot change their own ID list. However, managers get a special one-time exemption.
     
-    \returns TRUE, if the current logged-in user can edit IDs for this login.
+    \returns true, if the current logged-in user can edit IDs for this login.
      */
     public function user_can_edit_ids() {
         $ret = parent::user_can_edit_ids();
