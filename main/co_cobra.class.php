@@ -13,7 +13,7 @@
 */
 defined( 'LGV_ACCESS_CATCHER' ) or die ( 'Cannot Execute Directly' );	// Makes sure that this file is in the correct context.
 
-define('__COBRA_VERSION__', '1.0.0.2011');
+define('__COBRA_VERSION__', '1.0.0.2012');
 
 require_once(CO_Config::chameleon_main_class_dir().'/co_chameleon.class.php');
 
