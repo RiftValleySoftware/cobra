@@ -1,4 +1,7 @@
-**1.0.0.2012** *(TBD)*
+**1.0.0.2012** *(June 2, 2018)*
+
+- Updated latest CHAMELEON/BADGER.
+- improved the README.
 
 **1.0.0.2011** *(May 31, 2018)*
 

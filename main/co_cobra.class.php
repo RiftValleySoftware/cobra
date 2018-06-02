@@ -25,6 +25,11 @@ require_once(CO_Config::lang_class_dir().'/common.inc.php');
 
 /***************************************************************************************************************************/
 /**
+This class implements a "login manager" functionality to The Rift Valley Platform.
+
+This class can only be instantiated by the "God" login, or a login that is a CO_Login_Manager.
+
+You use COBRA to manage other logins, or security tokens.
  */
 class CO_Cobra {
     private $_chameleon_instance = NULL;    ///< This is the CHAMELEON instance that is associated with this COBRA instance.
