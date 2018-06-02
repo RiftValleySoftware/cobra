@@ -30,7 +30,7 @@ DESCRIPTION
 
 COBRA is designed to be the "user manager" for The Rift Valley Platform. It is not required to run the RVP, and is not required for basic logins and control of general security access. That is handled by BADGER and CHAMELEON.
 
-COBRA is required to create and manager logins and users.
+COBRA is required to create and manage logins and users.
 
 NEW LOGIN CLASSES
 -----------------
