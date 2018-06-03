@@ -1,4 +1,4 @@
-**1.0.0.2014** *(TBD)*
+**1.0.0.2014** *(June 3, 2018)*
 
 - Updated latest CHAMELEON/BADGER.
 - Removed redundant files from spec.
