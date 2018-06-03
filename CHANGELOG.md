@@ -1,3 +1,9 @@
+**1.0.0.2014** *(TBD)*
+
+- Updated latest CHAMELEON/BADGER.
+- Removed redundant files from spec.
+- Added support for Doxygen.
+
 **1.0.0.2013** *(June 2, 2018)*
 
 - Improved README.
