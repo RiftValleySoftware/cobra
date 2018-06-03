@@ -32,7 +32,7 @@ DOXYFILE_ENCODING      = UTF-8
 # title of most generated pages and in a few other places.
 # The default value is: My Project.
 
-PROJECT_NAME           = ANDISOL
+PROJECT_NAME           = COBRA
 
 # The PROJECT_NUMBER tag can be used to enter a project or revision number. This
 # could be handy for archiving the generated documentation or if some version
@@ -58,7 +58,7 @@ PROJECT_LOGO           =
 # entered, it will be relative to the location where doxygen was started. If
 # left blank the current directory will be used.
 
-OUTPUT_DIRECTORY       = /Users/cmarshall/webroot/andisol/doc
+OUTPUT_DIRECTORY       = /Users/cmarshall/webroot/andisol/cobra/doc
 
 # If the CREATE_SUBDIRS tag is set to YES then doxygen will create 4096 sub-
 # directories (in 2 levels) under the output directory of each output format and
@@ -794,20 +794,19 @@ WARN_LOGFILE           =
 INPUT                  = ../main \
                          ../lang \
                          ../README.md \
-                         ../cobra/badger_extension_classes \
-                         ../cobra/main \
-                         ../cobra/lang \
-                         ../cobra/chameleon/badger_extension_classes \
-                         ../cobra/chameleon/lang \
-                         ../cobra/chameleon/main \
-                         ../cobra/chameleon/badger/db \
-                         ../cobra/chameleon/badger/db_classes \
-                         ../cobra/chameleon/badger/lang \
-                         ../cobra/chameleon/badger/main \
-                         ../cobra/chameleon/badger/shared \
-                         ../cobra/README.md \
-                         ../cobra/chameleon/README.md \
-                         ../cobra/chameleon/badger/README.md
+                         ../badger_extension_classes \
+                         ../chameleon/badger_extension_classes \
+                         ../chameleon/lang \
+                         ../chameleon/main \
+                         ../chameleon/badger/db \
+                         ../chameleon/badger/db_classes \
+                         ../chameleon/badger/lang \
+                         ../chameleon/badger/main \
+                         ../chameleon/badger/shared \
+                         ../chameleon/README.md \
+                         ../chameleon/badger/install-assets/s_config.class.php \
+                         ../chameleon/badger/install-assets/t_config.interface.php \
+                         ../chameleon/badger/README.md
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
