@@ -1,4 +1,4 @@
-**1.0.0.2015** *(TBD)*
+**1.0.0.2015** *(June 8, 2018)*
 
 - Updated latest CHAMELEON/BADGER.
 
