@@ -1,3 +1,7 @@
+**1.0.0.2016** *(TBD)*
+
+- Improved documentation.
+
 **1.0.0.2015** *(June 8, 2018)*
 
 - Updated latest CHAMELEON/BADGER.
