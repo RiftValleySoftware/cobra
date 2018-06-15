@@ -13,7 +13,7 @@
 */
 defined( 'LGV_ACCESS_CATCHER' ) or die ( 'Cannot Execute Directly' );	// Makes sure that this file is in the correct context.
 
-define('__COBRA_VERSION__', '1.0.0.2016');
+define('__COBRA_VERSION__', '1.0.0.2017');
 
 require_once(CO_Config::chameleon_main_class_dir().'/co_chameleon.class.php');
 
@@ -132,7 +132,13 @@ class CO_Cobra {
                             $new_id = $new_login_object->id();
                             $manager->add_new_login_id($new_id);
                             if ($new_login_object->set_write_security_id($new_id)) {
-                                if ($new_login_object->set_ids($use_these_ids)) {
+                                $new_ids = [];
+                                foreach ($use_these_ids as $id) {
+                                    if (in_array($id, $my_ids) && ($id != $new_id)) {
+                                        array_push($new_ids, $id);
+                                    }
+                                }
+                                if ($new_login_object->set_ids($new_ids)) {
                                     $ret = $new_login_object;
                                 } else {
                                     $this->error = $new_login_object->error;
@@ -190,6 +196,9 @@ class CO_Cobra {
     
     /***********************/
     /**
+    Creates a new "standalone" user that has no associated login instance.
+    
+    \returns the new user record.
      */
     public function make_standalone_user() {
         $user = NULL;
