@@ -1,3 +1,5 @@
+**1.0.0.2018** *(TBD)*
+
 **1.0.0.2017** *(July 6, 2018)*
 
 - Improved documentation.
