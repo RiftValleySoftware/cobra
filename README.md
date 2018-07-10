@@ -1,4 +1,4 @@
-[]: # \page COBRA COBRA
+\page COBRA COBRA
 
 ![COBRA](images/COBRA.png)
 
