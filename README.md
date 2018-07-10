@@ -11,14 +11,13 @@ Part of the BAOBAB Server, which is part of the Rift Valley Platform
 
 INTRODUCTION
 ============
-
 COBRA is a security administration toolset for the Rift Valley Platform (RVP).
+
+![COBRA](images/COBRALayers.png)
 
 It is a standalone class that is instantiated with a logged-in \ref CHAMELEON instance. That login needs to be an instance of `CO_Login_Manager` (or a subclass).
 
 COBRA will allow a manager to create and delete logins, as well as manage security tokens.
-
-![COBRA](images/COBRALayers.png)
 
 \ref CHAMELEON is the "First Layer Abstraction" from the data storage and retrieval. It implements a few higher-level capabilities, such as collections, users and places.
 
