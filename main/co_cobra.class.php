@@ -131,15 +131,21 @@ class CO_Cobra {
                         } else {
                             $new_id = $new_login_object->id();
                             $manager->add_new_login_id($new_id);
-                            if ($new_login_object->set_write_security_id($new_id)) {
-                                $new_ids = [];
-                                foreach ($use_these_ids as $id) {
-                                    if (in_array($id, $my_ids) && ($id != $new_id)) {
-                                        array_push($new_ids, $id);
+                            if ($new_login_object->set_read_security_id($new_id)) {
+                                if ($new_login_object->set_write_security_id($new_id)) {
+                                    $new_ids = [];
+                                    foreach ($use_these_ids as $id) {
+                                        if (in_array($id, $my_ids) && ($id != $new_id)) {
+                                            array_push($new_ids, $id);
+                                        }
                                     }
-                                }
-                                if ($new_login_object->set_ids($new_ids)) {
-                                    $ret = $new_login_object;
+                                    if ($new_login_object->set_ids($new_ids)) {
+                                        $ret = $new_login_object;
+                                    } else {
+                                        $this->error = $new_login_object->error;
+                                        $new_login_object->delete_from_db();
+                                        $new_login_object = NULL;
+                                    }
                                 } else {
                                     $this->error = $new_login_object->error;
                                     $new_login_object->delete_from_db();
