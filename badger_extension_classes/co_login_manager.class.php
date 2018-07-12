@@ -67,6 +67,14 @@ class CO_Login_Manager extends CO_Cobra_Login {
     
     /***********************/
     /**
+    \returns true, as we are a manager.
+     */
+    public function is_manager() {
+        return true;
+    }
+    
+    /***********************/
+    /**
     This allows us to add one single ID to our list.
     We set our ephemeral ID, then we add the ID, which should pass, just this once.
     

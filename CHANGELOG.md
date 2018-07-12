@@ -1,5 +1,7 @@
 **1.0.0.2018** *(TBD)*
 
+- Added a quick "manager check" to login objects.
+
 **1.0.0.2017** *(July 6, 2018)*
 
 - Improved documentation.
