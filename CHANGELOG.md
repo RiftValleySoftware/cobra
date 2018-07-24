@@ -1,3 +1,7 @@
+**1.0.0.2019** *(TBD)*
+
+- Updated CHAMELEON.
+
 **1.0.0.2018** *(July 22, 2018)*
 
 - Added a quick "manager check" to login objects.
