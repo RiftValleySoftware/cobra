@@ -116,13 +116,7 @@ class CO_Cobra {
                 if (isset($new_login_object) && ($new_login_object instanceof CO_Cobra_Login)) {
                     $new_login_object->login_id = $in_login_id;
                     if (strlen($in_cleartext_password) >= CO_Config::$min_pw_len) {
-                        $salt = (isset($new_login_object->context) && isset($new_login_object->context['hashed_password'])) ? $new_login_object->context['hashed_password'] : NULL;
-                        
-                        if (!$salt) {
-                            $salt = sprintf("%02d", (function_exists('random_int') ? random_int(0, 99) : rand(0, 99)));
-                        }
-                        
-                        $new_login_object->context['hashed_password'] = crypt($in_cleartext_password, $salt);
+                        $new_login_object->context['hashed_password'] = password_hash($in_cleartext_password, PASSWORD_DEFAULT);
                         
                         if (!$new_login_object->update_db()) {
                             $this->error = $new_login_object->error;

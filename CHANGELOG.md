@@ -1,6 +1,7 @@
 **1.0.0.2019** *(TBD)*
 
 - Updated CHAMELEON.
+- There was one place where the old crypt-keeper was still hanging around.
 
 **1.0.0.2018** *(July 22, 2018)*
 
