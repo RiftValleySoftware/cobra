@@ -87,26 +87,4 @@ class CO_Login_Manager extends CO_Cobra_Login {
         unset($this->_added_new_id);
         return $ret;
     }
-    
-    /***********************/
-    /**
-    A user cannot change their own ID list. However, managers get a special one-time exemption.
-    
-    \returns true, if the current logged-in user can edit IDs for this login.
-     */
-    public function user_can_edit_ids() {
-        $ret = parent::user_can_edit_ids();
-        
-        // God objects can only be edited by themselves.
-        if (!$ret && !$this->i_am_a_god() && $this->_added_new_id) {
-            $test_obj = $this->get_access_object();
-            
-            // It's a two-stage test. We also need to make sure that the CHAMELEON instance agrees that this is kosher.
-            if ($test_obj instanceof CO_Chameleon) {
-                $ret = $test_obj->test_access($this->_added_new_id);
-            }
-        }
-        
-        return $ret;
-    }
 };

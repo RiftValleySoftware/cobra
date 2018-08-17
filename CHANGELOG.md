@@ -2,6 +2,7 @@
 
 - Updated CHAMELEON.
 - There was one place where the old crypt-keeper was still hanging around.
+- Removed the test for being able to edit tokens, leaving it to the much lower-level BADGER routine.
 
 **1.0.0.2018** *(July 22, 2018)*
 
