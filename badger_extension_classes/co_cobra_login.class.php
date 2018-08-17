@@ -41,34 +41,6 @@ class CO_Cobra_Login extends CO_Security_Login {
             $this->instance_description = isset($this->name) && $this->name ? "$this->name (".$this->login_id.")" : "Unnamed Standard Login Node (".$this->login_id.")";
         }
     }
-    
-    /***********************/
-    /**
-    A user cannot change their own ID list.
-    
-    \returns true, if the current logged-in user can edit IDs for this login.
-     */
-    public function user_can_edit_ids() {
-        $ret = parent::user_can_edit_ids();
-        
-        // God objects can only be edited by themselves.
-        if (!$ret && !$this->i_am_a_god()) {
-            $current_user = $this->get_access_object()->get_login_item();
-        
-            // Only a login Manager can edit, and it can't be us.
-            if (($current_user instanceof CO_Login_Manager) && ($current_user->id() != $this->id())) {
-                $ids = $this->get_access_object()->get_security_ids();
-        
-                $my_write_item = intval($this->write_security_id);
-        
-                if (isset($ids) && is_array($ids) && count($ids)) {
-                    $ret = in_array($my_write_item, $ids);
-                }
-            }
-        }
-        
-        return $ret;
-    }
 
     /***********************/
     /**
