@@ -1,4 +1,4 @@
-**1.0.0.2019** *(TBD)*
+**1.0.0.3000** *(September 3, 2018)*
 
 - Updated CHAMELEON.
 - There was one place where the old crypt-keeper was still hanging around.
