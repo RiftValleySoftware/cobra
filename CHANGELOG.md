@@ -1,3 +1,7 @@
+**1.0.0.3001** *(October 29, 2018)*
+
+- Fixed an error, where a God Admin could not create users if it was not a promoted manager.
+
 **1.0.0.3000** *(September 3, 2018)*
 
 - Updated CHAMELEON.
