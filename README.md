@@ -65,7 +65,7 @@ You implement COBRA by first setting up \ref CHAMELEON (`CO_Chameleon`), then in
 LICENSE
 =======
 
-![The Great Rift Valley Software Company LLC](images/viper.png)
+![The Great Rift Valley Software Company](images/RiftValleySimpleCorpLogo.png)
 © Copyright 2018, The Great Rift Valley Software Company
 
 LICENSE:
