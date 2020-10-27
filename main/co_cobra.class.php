@@ -102,7 +102,7 @@ class CO_Cobra {
                                         $in_is_login_manager = false    ///< If true, then this is a "promotion" to a a manager. If false (default), then this is a "demotion" to a standard user.
                                         ) {
         $ret = NULL;
-        $working_login = $this->_chameleon_instance->get_login_item_by_login_string($in_login_id)   // This is the login we are changing.
+        $working_login = $this->_chameleon_instance->get_login_item_by_login_string($in_login_id);   // This is the login we are changing.
         $manager = $this->_chameleon_instance->get_login_item();                                    // This is our current login.
         // Make sure we are a login manager, first, and that we have write permission on the user.
         if ($working_login && $working_login->user_can_write() && ($manager instanceof CO_Login_Manager || $manager->is_god())) {
