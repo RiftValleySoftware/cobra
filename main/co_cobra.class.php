@@ -116,12 +116,14 @@ class CO_Cobra {
                 
                 if (isset($new_login_object) && ($new_login_object instanceof CO_Cobra_Login)) {
                     $original_login_id = $working_login->id();
-                    $original_ids = $working_login->ids;
+                    $original_ids = $working_login->ids();
                     if (!isset($original_ids)) {
                         $original_ids = [];
                     }
                     
                     array_push($original_ids, $original_login_id);    // We will add this to the new login's IDs.
+                    $original_ids = array_unique($original_ids);
+                    
                     asort($original_ids);
                     
                     $new_login_object->login_id = $working_login->login_id;
