@@ -1,3 +1,7 @@
+**1.0.6.3000** *(December 9, 2020)*
+
+- Updated CHAMELEON.
+
 **1.0.5.3000** *(November 21, 2020)*
 
 - Fixed an issue, where converting users did not work properly, when logged in as God.
