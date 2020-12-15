@@ -1,3 +1,7 @@
+**1.0.8.3000** *(December 15, 2020)*
+
+- Added support for a fast query of logins.
+
 **1.0.7.3000** *(December 12, 2020)*
 
 - Fixed a bug in the new fast user query.
