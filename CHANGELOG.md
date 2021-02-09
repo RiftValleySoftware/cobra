@@ -1,4 +1,6 @@
-**1.1.0.3000** *(TBD)*
+**1.1.0.3000** *(February 9, 2021)*
+
+- Added support for the latest BADGER and CHAMELEON, which support personal tokens.
 
 **1.0.8.3000** *(December 15, 2020)*
 
