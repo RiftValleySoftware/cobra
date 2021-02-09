@@ -28,7 +28,7 @@ require_once(dirname(dirname(__FILE__)).'/functions.php');
 // -------------------------------------- TEST DISPATCHER ------------------------------------------
 
 function create_run_tests() {
-//     create_run_test(9, 'FAIL -Create User From COBRA', 'We log in and instantiate CHAMELEON as a manager, then attempt to create a new user from a login we can\'t see.', 'king-cobra', NULL, 'CoreysGoryStory');
+    create_run_test(9, 'FAIL -Create User From COBRA', 'We log in and instantiate CHAMELEON as a manager, then attempt to create a new user from a login we can\'t see.', 'king-cobra', NULL, 'CoreysGoryStory');
     create_run_test(10, 'PASS -Create User From COBRA', 'We log in and instantiate CHAMELEON as a manager, then attempt to create a new user from a login we can see.', 'asp', NULL, 'CoreysGoryStory');
     create_run_test(11, 'FAIL -Get Created User From COBRA', 'We log in and instantiate CHAMELEON as a manager, then attempt to see the same user; however, this time, we set the user to have an access the manager can\'t see, so it will attempt to create it. It should be noted that this manager can see the login ID, but not the user.', 'asp', NULL, 'CoreysGoryStory');
     create_run_test(12, 'FAIL -Get Created User From COBRA', 'We do it again, but this time, use a manager that can see the login (but not the user).', 'asp', NULL, 'CoreysGoryStory');

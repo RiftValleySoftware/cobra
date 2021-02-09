@@ -40,6 +40,7 @@ class CO_Config {
     static $min_pw_len = 8;                         ///< The minimum password length.
     static $session_timeout_in_seconds = 2;         ///< Two-Second API key timeout.
     static $god_session_timeout_in_seconds  = 1;    ///< API key session timeout for the "God Mode" login, in seconds (integer value). Default is 10 minutes.
+    static $use_personal_tokens = false;             ///< If TRUE, then we can use "personal IDs."
     
     static $god_mode_password = 'BWU-HA-HAAAA-HA!';
     

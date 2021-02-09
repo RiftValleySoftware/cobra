@@ -354,7 +354,6 @@ class CO_Cobra {
                                             $in_make_user_if_necessary = false  ///< If true (Default is false), then the user will be created if it does not already exist. Ignored, if we are not a Login Manager.
                                         ) {
         $user = $this->_chameleon_instance->get_user_from_login($in_login_id);   // First, see if it's already a thing.
-        
         if (!$user && $in_make_user_if_necessary && ($this->_chameleon_instance->god_mode() || ($this->_chameleon_instance->get_login_item() instanceof CO_Login_Manager))) {   // If not, we will create a new one, based on the given login. We must be a manager.
             if (isset($in_login_id) && (0 < intval($in_login_id))) {    // See if they seek a different login.
                 $login_id = intval($in_login_id);

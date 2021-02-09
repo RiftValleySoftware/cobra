@@ -46,6 +46,7 @@ function instance_test_01($in_login = NULL, $in_hashed_password = NULL, $in_pass
         $cobra_instance = new CO_Cobra($chameleon_instance);
     } catch (Error $e) {
         echo("<h2 style=\"color:red;font-weight:bold\">The COBRA instance is not valid!</h2>");
+        echo('ERROR:<pre>'.htmlspecialchars(print_r($e, true)).'</pre>');
     }
 }
 
