@@ -1,3 +1,5 @@
+**1.1.0.3000** *(TBD)*
+
 **1.0.8.3000** *(December 15, 2020)*
 
 - Added support for a fast query of logins.
