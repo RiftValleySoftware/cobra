@@ -33,7 +33,7 @@ if ( !defined('LGV_LANG_CATCHER') ) {
     define('LGV_LANG_CATCHER', 1);
 }
 
-require_once(CO_Config::lang_class_dir().'/common.inc.php');
+require_once(CO_Config::cobra_lang_class_dir().'/common.inc.php');
 
 /***************************************************************************************************************************/
 /**
