@@ -93,6 +93,23 @@ class CO_Cobra {
     
     /***********************/
     /**
+    Create new security IDs to be used as personal tokens.
+    
+    \returns an Integer Array, with the new security IDs to use as personal tokens.
+     */
+    private function _create_this_many_personal_ids($in_count   ///< The number of personal IDs to create.
+                                                    ) {
+        $ret = [];
+        
+        for ($index = 0; $index < $in_count; $index++) {
+            $ret[] = $this->make_security_token();
+        }
+        
+        return $ret;
+    }
+    
+    /***********************/
+    /**
     This is the internal function used to convert a login to (or from) a manager, in the security database.
     This can only be called from a login manager.
     
@@ -171,10 +188,11 @@ class CO_Cobra {
     
     \returns the new CO_Cobra_Login instance (or CO_Login_Manager instance).
      */
-    protected function _create_new_login(   $in_login_id,                   ///< The login ID as text. It needs to be unique, within the Security database, and this will fail, if it is not.
-                                            $in_cleartext_password,         ///< The password to set (in cleartext). It will be stored as a hashed password.
-                                            $in_security_token_ids = NULL,  ///< An array of integers. These are security token IDs for the login (default is NULL). If NULL, then no IDs will be set. These IDs must be selected from those available to the currently logged-in manager.
-                                            $in_is_login_manager = false    ///< true, if we want a CO_Login_Manager instance, instead of a CO_Cobra_Login instance. Default is false.
+    protected function _create_new_login(   $in_login_id,                           ///< The login ID as text. It needs to be unique, within the Security database, and this will fail, if it is not.
+                                            $in_cleartext_password,                 ///< The password to set (in cleartext). It will be stored as a hashed password.
+                                            $in_security_token_ids = NULL,          ///< An array of integers. These are security token IDs for the login (default is NULL). If NULL, then no IDs will be set. These IDs must be selected from those available to the currently logged-in manager.
+                                            $in_is_login_manager = false,           ///< true, if we want a CO_Login_Manager instance, instead of a CO_Cobra_Login instance. Default is false.
+                                            $in_create_this_many_personal_ids = 0   ///< This is how many Personal tokens should be created and assigned. Default is 0.
                                         ) {
         $ret = NULL;
         
@@ -220,7 +238,20 @@ class CO_Cobra {
                                             array_push($new_ids, $id);
                                         }
                                     }
+                                    
                                     if ($new_login_object->set_ids($new_ids)) {
+                                        if (CO_Config::use_personal_tokens() && (0 < $in_create_this_many_personal_ids)) {
+                                            $new_personal_ids = $this->_create_this_many_personal_ids($in_create_this_many_personal_ids);
+                                            $new_login_object->set_personal_ids($new_personal_ids);
+                                            if (!$new_login_object->error) {
+                                                $ret = $new_login_object;
+                                            } else {
+                                                $this->error = $new_login_object->error;
+                                                $new_login_object->delete_from_db();
+                                                $new_login_object = NULL;
+                                            }
+                                        }
+                                        
                                         $ret = $new_login_object;
                                     } else {
                                         $this->error = $new_login_object->error;
@@ -416,11 +447,11 @@ class CO_Cobra {
     
     \returns the new CO_Cobra_Login instance.
      */
-    public function create_new_standard_login(  $in_login_id,                   ///< The login ID as text. It needs to be unique, within the Security database, and this will fail, if it is not.
-                                                $in_cleartext_password,         ///< The password to set (in cleartext). It will be stored as a hashed password.
-                                                $in_security_token_ids = NULL   ///< An array of integers. These are security token IDs for the login (default is NULL). If NULL, then no IDs will be set. These IDs must be selected from those available to the currently logged-in manager.
+    public function create_new_standard_login(  $in_login_id,                           ///< The login ID as text. It needs to be unique, within the Security database, and this will fail, if it is not.
+                                                $in_cleartext_password,                 ///< The password to set (in cleartext). It will be stored as a hashed password.
+                                                $in_create_this_many_personal_ids = 0   ///< This is how many Personal tokens should be created and assigned. Default is 0.
                                             ) {
-        return $this->_create_new_login($in_login_id, $in_cleartext_password, $in_security_token_ids);
+        return $this->_create_new_login($in_login_id, $in_cleartext_password, $in_create_this_many_personal_ids);
     }
     
     /***********************/
@@ -430,11 +461,11 @@ class CO_Cobra {
     
     \returns the new CO_Login_Manager instance.
      */
-    public function create_new_manager_login(   $in_login_id,                   ///< The login ID as text. It needs to be unique, within the Security database, and this will fail, if it is not.
-                                                $in_cleartext_password,         ///< The password to set (in cleartext). It will be stored as a hashed password.
-                                                $in_security_token_ids = NULL   ///< An array of integers. These are security token IDs for the login (default is NULL). If NULL, then no IDs will be set. These IDs must be selected from those available to the currently logged-in manager.
+    public function create_new_manager_login(   $in_login_id,                           ///< The login ID as text. It needs to be unique, within the Security database, and this will fail, if it is not.
+                                                $in_cleartext_password,                 ///< The password to set (in cleartext). It will be stored as a hashed password.
+                                                $in_create_this_many_personal_ids = 0   ///< This is how many Personal tokens should be created and assigned. Default is 0.
                                             ) {
-        return $this->_create_new_login($in_login_id, $in_cleartext_password, $in_security_token_ids, true);
+        return $this->_create_new_login($in_login_id, $in_cleartext_password, $in_create_this_many_personal_ids, true);
     }
     
     /***********************/
