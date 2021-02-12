@@ -33,18 +33,7 @@ require_once(dirname(__FILE__).'/co_login_manager.class.php');
  */
 class CO_Cobra_Login extends CO_Security_Login {
     protected $_special_first_time_security_exemption;
-    /***********************/
-    /**
-    This creates and assigns any initial personal tokens to the login.
-     */
-    private function _create_initial_personal_tokens(   $in_number_of_tokens    ///< the number of tokens to create. If 0, then the function is immediately exited.
-                                                    ) {
-        $in_number_of_tokens = intval($in_number_of_tokens);    // Belt and suspenders...
-        
-        if (0 < $in_number_of_tokens) {
-        }
-    }
-    
+
     /***********************************************************************************************************************/    
     /***********************/
     /**
@@ -52,8 +41,7 @@ class CO_Cobra_Login extends CO_Security_Login {
      */
 	public function __construct(    $in_login_id = NULL,            ///< The login ID
                                     $in_hashed_password = NULL,     ///< The password, crypt-hashed
-                                    $in_raw_password = NULL,        ///< The password, cleartext.
-                                    $in_initial_personal_ids = 0    /// This is the number of personal IDs to create and assign. It defaults to 0.
+                                    $in_raw_password = NULL         ///< The password, cleartext.
 	                            ) {
         parent::__construct($in_login_id, $in_hashed_password, $in_raw_password);
         
@@ -64,12 +52,6 @@ class CO_Cobra_Login extends CO_Security_Login {
             $this->instance_description = 'GOD MODE: '.(isset($this->name) && $this->name ? "$this->name (".$this->login_id.")" : "Unnamed Standard Login Node (".$this->login_id.")");
         } else {
             $this->instance_description = isset($this->name) && $this->name ? "$this->name (".$this->login_id.")" : "Unnamed Standard Login Node (".$this->login_id.")";
-        }
-        
-        if (CO_Config::use_personal_tokens()) {
-            $initial_ids = $this->_create_initial_personal_tokens($in_initial_personal_ids);
-        
-            $this->set_personal_ids($initial_ids);
         }
     }
     
@@ -83,10 +65,6 @@ class CO_Cobra_Login extends CO_Security_Login {
      */
     public function set_personal_ids(   $in_personal_ids = []   ///< An Array of Integers, with the new personal IDs. This replaces any previous ones. If empty, then the IDs are removed.
                                     ) {
-        if (NULL == $in_personal_ids) {
-            $in_personal_ids = [];
-        }
-        
         $personal_ids_temp = array_unique(array_map('intval', $in_personal_ids));
         if (CO_Config::use_personal_tokens() && (NULL == $this->_personal_ids) && is_array($personal_ids_temp) && count($personal_ids_temp)) {
             $personal_ids = [];

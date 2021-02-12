@@ -260,6 +260,15 @@
                             echo("<h4>NO IDS!</h4>");
                         }
                     }
+            
+                    if ( $in_record_object instanceof CO_Security_Login) {
+                        if (method_exists($in_record_object, 'personal_ids')) {
+                            $ids = $in_record_object->personal_ids();
+                            if (is_array($ids) && count($ids)) {
+                                echo("<p>PERSONAL IDs: ".implode(', ', $in_record_object->personal_ids())."</p>");
+                            }
+                        }
+                    }
                         
                     if (method_exists($in_record_object, 'children')) {
                         $children = $in_record_object->children();
