@@ -268,7 +268,7 @@
                                 echo("<p>PERSONAL IDs: ".implode(', ', $in_record_object->personal_ids())."</p>");
                             }
                             
-                            test_personal_ids_fo_this_object($in_record_object->id());
+                            test_personal_ids_for_this_object($in_record_object->id());
                         }
                     }
                         
@@ -288,10 +288,10 @@
         }
     }
     
-    function test_personal_ids_fo_this_object($in_test_target_id) {
+    function test_personal_ids_for_this_object($in_test_target_id) {
         $god_access_instance = new CO_Access('admin', NULL, CO_Config::god_mode_password());
         $test_record = $god_access_instance->get_single_security_record_by_id($in_test_target_id);
-        if(isset($test_record) && $test_record instanceof CO_Cobra_Login) {
+        if(isset($test_record)) {
             $ids = $test_record->personal_ids();
             $pass = true;
             

@@ -24,7 +24,11 @@
     The Great Rift Valley Software Company: https://riftvalleysoftware.com
 */
 require_once(dirname(dirname(__FILE__)).'/functions.php');
-    
+
+global $global_num_ids;
+
+$global_num_ids = 50;
+
 // -------------------------------------- TEST DISPATCHER ------------------------------------------
 
 function personal_id_run_basic_tests() {
@@ -35,8 +39,15 @@ function personal_id_run_basic_tests() {
     personal_id_run_test(68, 'PASS- BASIC CREATE FIVE INITIAL IDS', 'Sign in as the \'duke\' Admin, Create A new login, and assign it 5 new personal IDs.', 'duke', NULL, 'CoreysGoryStory');
     personal_id_run_test(69, 'PASS- BASIC CREATE ONE THOUSAND INITIAL IDS', 'Sign in as the \'Emperor\' Admin, Create A new login, and assign it 1,000 new personal IDs.', 'emperor', NULL, 'CoreysGoryStory');
 }
+    
+// -------------------------------------- TEST DISPATCHER ------------------------------------------
 
-// ------------------------------------------ TESTS ------------------------------------------------
+function personal_id_run_advanced_tests() {
+    global $global_num_ids;
+    personal_id_run_test(70, 'PASS- CREATE AND CHECK '.$global_num_ids.' RANDOM IDS', 'Sign in as the \'Asp\' Admin, create IDs at random, with random numbers of personal IDs, then ensure that the IDs and types match.', 'asp', NULL, 'CoreysGoryStory');
+}
+
+// --------------------------------------- BASIC TESTS ---------------------------------------------
 
 function personal_id_test_64($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
     $chameleon_instance = make_chameleon($in_login, $in_hashed_password, $in_password);
@@ -130,6 +141,98 @@ function personal_id_test_69($in_login = NULL, $in_hashed_password = NULL, $in_p
     }
 }
 
+// --------------------------------------- ADVANCED TESTS ------------------------------------------
+
+function personal_id_test_70($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
+    global $global_num_ids;
+
+    $chameleon_instance = make_chameleon($in_login, $in_hashed_password, $in_password);
+    $cobra_instance = make_cobra($chameleon_instance);
+    $god_access_instance = new CO_Access('admin', NULL, CO_Config::god_mode_password());
+    
+    $tracker = [];
+    
+    if (isset($cobra_instance) && ($cobra_instance instanceof CO_Cobra)) {
+        set_time_limit ( max(30, intval($global_num_ids) * 2) );
+    
+        for ($index = 0; $index < $global_num_ids; $index++) {
+            $is_manager = rand(0, 1);
+            $num_personal_ids = intval(rand(0, 200));
+            $login_id = ($is_manager ? "manager" : "user")."_".strval($index);
+            $tracker[] = ['login_id' => $login_id, 'is_manager' => $is_manager, 'num_personal_ids' => $num_personal_ids];
+            make_one_user($cobra_instance, $login_id, $is_manager, $num_personal_ids);
+        }
+        
+        if (is_array($tracker) && count($tracker)) {
+            $pass = true;
+            foreach ($tracker as $track) {
+                $pass = $pass || examine_one_user($god_access_instance, $track);
+            }
+            
+            echo('<div id="personal_id-tests-advanced-results" class="closed">');
+                if ($pass) {
+                    echo('<h4 class="header"><a href="javascript:toggle_main_state(\'personal_id-tests-advanced-results\')"><span style="color:green">TEST PASSES</span></a></h4>');
+                } else {
+                    echo('<h4 class="header"><a href="javascript:toggle_main_state(\'personal_id-tests-advanced-results\')"><span style="color:red">TEST FAILS</span></a></h4>');
+                }
+                echo('<div class="container">');
+                    foreach ($tracker as $track) {
+                        display_one_user($god_access_instance, $track);
+                    }
+                echo('</div>');
+            echo('</div>');
+        } else {
+            echo("<h2 style=\"color:red;font-weight:bold\">Failed to Create Users!</h2>");
+        }
+        
+        set_time_limit ( 30 );
+    }
+}
+
+function make_one_user($in_cobra_instance, $in_user_id, $in_is_manager, $in_number_of_personal_ids) {
+    $cobra_login_instance = NULL;
+    
+    if ($in_is_manager) {
+        $cobra_login_instance = $in_cobra_instance->create_new_manager_login($in_user_id, 'CoreysGoryStory', $in_number_of_personal_ids);
+    } else {
+        $cobra_login_instance = $in_cobra_instance->create_new_standard_login($in_user_id, 'CoreysGoryStory', $in_number_of_personal_ids);
+    }
+    
+    if (!isset($cobra_login_instance) || (!($cobra_login_instance instanceof CO_Cobra_Login) && !($cobra_login_instance instanceof CO_Cobra_Login_Manager))) {
+        echo("<h4 style=\"color:red;font-weight:bold\">The User instance is not valid!</h4>");
+        echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$in_cobra_instance->error->error_code.') '.$in_cobra_instance->error->error_name.' ('.$in_cobra_instance->error->error_description.')</p>');
+        $cobra_login_instance = NULL;
+    }
+    
+    return $cobra_login_instance;
+}
+
+function examine_one_user($in_god_access_instance, $in_tracker) {
+    $test_record = $in_god_access_instance->get_login_item_by_login_string($in_tracker['login_id']);
+    if (isset($test_record) && ($test_record instanceof CO_Cobra_Login)) {
+        $personal_ids = $test_record->personal_ids();
+        if (!is_array($personal_ids) || (count($personal_ids) != $in_tracker['num_personal_ids'])) {
+            echo("<h4 style=\"color:red;font-weight:bold\">The number of personal IDs for ".$in_tracker['login_id']." is invalid!</h4>");
+        } else {
+            if ($in_tracker['is_manager'] && ($test_record instanceof CO_Login_Manager)) {
+                return true;
+            } else {
+                echo("<h4 style=\"color:red;font-weight:bold\">".$in_tracker['login_id']." should be a manager!</h4>");
+            }
+        }
+    } else {
+        echo("<h4 style=\"color:red;font-weight:bold\">The User instance is not valid!</h4>");
+        echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$cobra_instance->error->error_code.') '.$cobra_instance->error->error_name.' ('.$cobra_instance->error->error_description.')</p>');
+    }
+    
+    return false;
+}
+
+function display_one_user($in_god_access_instance, $in_tracker) {
+    $test_record = $in_god_access_instance->get_login_item_by_login_string($in_tracker['login_id']);
+    hierarchicalDisplayRecord($test_record);
+}
+
 // ----------------------------------------- STRUCTURE ---------------------------------------------
 
 function personal_id_run_test($in_num, $in_title, $in_explain, $in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
@@ -154,14 +257,28 @@ ob_start();
     
     echo('<div class="test-wrapper" style="display:table;margin-left:auto;margin-right:auto;text-align:left">');
         echo('<h1 class="header">PERSONAL TOKEN TESTS</h1>');
-        echo('<div id="personal_id-tests" class="closed">');
-            echo('<h2 class="header"><a href="javascript:toggle_main_state(\'personal_id-tests\')">BASIC TESTS</a></h2>');
+        echo('<div id="personal_id-tests-basic" class="closed">');
+            echo('<h2 class="header"><a href="javascript:toggle_main_state(\'personal_id-tests-basic\')">BASIC TESTS</a></h2>');
             echo('<div class="container">');
                 echo('<p class="explain"></p>');
             
                 $start = microtime(true);
                 
                 personal_id_run_basic_tests();
+                
+                echo('<h5>The entire set of tests took '. sprintf('%01.3f', microtime(true) - $start) . ' seconds to complete.</h5>');
+                
+            echo('</div>');
+        echo('</div>');
+        
+        echo('<div id="personal_id-tests-advanced" class="closed">');
+            echo('<h2 class="header"><a href="javascript:toggle_main_state(\'personal_id-tests-advanced\')">ADVANCED TESTS</a></h2>');
+            echo('<div class="container">');
+                echo('<p class="explain"></p>');
+            
+                $start = microtime(true);
+                
+                personal_id_run_advanced_tests();
                 
                 echo('<h5>The entire set of tests took '. sprintf('%01.3f', microtime(true) - $start) . ' seconds to complete.</h5>');
                 
