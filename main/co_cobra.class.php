@@ -341,6 +341,14 @@ class CO_Cobra {
     
     /***********************/
     /**
+    \returns the CHAMELEON instance for this instance.
+     */
+    public function get_chameleon_instance() {
+        return $this->_chameleon_instance;
+    }
+    
+    /***********************/
+    /**
     \returns an array of integers, with each one representing a special security token for editing security items.
      */
     public function get_security_ids() {

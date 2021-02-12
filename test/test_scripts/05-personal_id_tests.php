@@ -27,16 +27,38 @@ require_once(dirname(dirname(__FILE__)).'/functions.php');
     
 // -------------------------------------- TEST DISPATCHER ------------------------------------------
 
-function personal_id_run_tests() {
-    personal_id_run_test(64, 'BASIC CREATE NO INITIAL IDS', 'PASS- Sign in as the God Admin, Create A new login, and assign it no new personal IDs.', 'admin', NULL, CO_Config::god_mode_password());
-    personal_id_run_test(65, 'BASIC CREATE ONE INITIAL ID', 'PASS- Sign in as the \'Asp\' Admin, Create A new login, and assign it 1 new personal ID.', 'asp', NULL, 'CoreysGoryStory');
-    personal_id_run_test(66, 'BASIC CREATE FIVE INITIAL IDS', 'PASS- Sign in as the \'duke\' Admin, Create A new login, and assign it 5 new personal IDs.', 'duke', NULL, 'CoreysGoryStory');
-    personal_id_run_test(67, 'BASIC CREATE THREE HUNDRED INITIAL IDS', 'PASS- Sign in as the \'Emperor\' Admin, Create A new login, and assign it 5 new personal IDs.', 'emperor', NULL, 'CoreysGoryStory');
+function personal_id_run_basic_tests() {
+    personal_id_run_test(64, 'PASS- BASIC LOG IN AND CHECK (NO IDs)', 'Sign in as the \'King Cobra\' Admin, and check for no personal IDs.', 'king-cobra', NULL, 'CoreysGoryStory');
+    personal_id_run_test(65, 'PASS- BASIC LOG IN AND CHECK', 'Sign in as the \'Asp\' Admin, and check for one personal ID.', 'asp', NULL, 'CoreysGoryStory');
+    personal_id_run_test(66, 'PASS- BASIC CREATE NO INITIAL IDS', 'Sign in as the God Admin, Create A new login, and assign it no new personal IDs.', 'admin', NULL, CO_Config::god_mode_password());
+    personal_id_run_test(67, 'PASS- BASIC CREATE ONE INITIAL ID', 'Sign in as the \'Asp\' Admin, Create A new login, and assign it 1 new personal ID.', 'asp', NULL, 'CoreysGoryStory');
+    personal_id_run_test(68, 'PASS- BASIC CREATE FIVE INITIAL IDS', 'Sign in as the \'duke\' Admin, Create A new login, and assign it 5 new personal IDs.', 'duke', NULL, 'CoreysGoryStory');
+    personal_id_run_test(69, 'PASS- BASIC CREATE ONE THOUSAND INITIAL IDS', 'Sign in as the \'Emperor\' Admin, Create A new login, and assign it 1,000 new personal IDs.', 'emperor', NULL, 'CoreysGoryStory');
 }
 
 // ------------------------------------------ TESTS ------------------------------------------------
 
 function personal_id_test_64($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
+    $chameleon_instance = make_chameleon($in_login, $in_hashed_password, $in_password);
+    $cobra_instance = make_cobra($chameleon_instance);
+    
+    if (isset($cobra_instance) && ($cobra_instance instanceof CO_Cobra)) {
+        $cobra_login_instance = $cobra_instance->get_chameleon_instance()->get_login_item();
+        if (isset($cobra_login_instance) && ($cobra_login_instance instanceof CO_Cobra_Login)) {
+            echo("<h2 style=\"color:green;font-weight:bold\">The Login instance is valid!</h2>");
+            hierarchicalDisplayRecord($cobra_login_instance);
+        } else {
+            echo("<h2 style=\"color:red;font-weight:bold\">The User instance is not valid!</h2>");
+            echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$cobra_instance->error->error_code.') '.$cobra_instance->error->error_name.' ('.$cobra_instance->error->error_description.')</p>');
+        }
+    }
+}
+
+function personal_id_test_65($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
+    personal_id_test_64($in_login, $in_hashed_password, $in_password);
+}
+
+function personal_id_test_66($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
     $chameleon_instance = make_chameleon($in_login, $in_hashed_password, $in_password);
     $cobra_instance = make_cobra($chameleon_instance);
     
@@ -54,7 +76,7 @@ function personal_id_test_64($in_login = NULL, $in_hashed_password = NULL, $in_p
     }
 }
 
-function personal_id_test_65($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
+function personal_id_test_67($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
     $chameleon_instance = make_chameleon($in_login, $in_hashed_password, $in_password);
     $cobra_instance = make_cobra($chameleon_instance);
     
@@ -72,7 +94,7 @@ function personal_id_test_65($in_login = NULL, $in_hashed_password = NULL, $in_p
     }
 }
 
-function personal_id_test_66($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
+function personal_id_test_68($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
     $chameleon_instance = make_chameleon($in_login, $in_hashed_password, $in_password);
     $cobra_instance = make_cobra($chameleon_instance);
     
@@ -90,12 +112,12 @@ function personal_id_test_66($in_login = NULL, $in_hashed_password = NULL, $in_p
     }
 }
 
-function personal_id_test_67($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
+function personal_id_test_69($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
     $chameleon_instance = make_chameleon($in_login, $in_hashed_password, $in_password);
     $cobra_instance = make_cobra($chameleon_instance);
     
     if (isset($cobra_instance) && ($cobra_instance instanceof CO_Cobra)) {
-        $cobra_login_instance = $cobra_instance->create_new_standard_login('chocolates', 'CoreysGoryStory', 300);
+        $cobra_login_instance = $cobra_instance->create_new_standard_login('chocolates', 'CoreysGoryStory', 1000);
         if (isset($cobra_login_instance) && ($cobra_login_instance instanceof CO_Cobra_Login)) {
             echo("<h2 style=\"color:green;font-weight:bold\">The Login instance is valid!</h2>");
             $god_access_instance = new CO_Access('admin', NULL, CO_Config::god_mode_password());
@@ -139,7 +161,7 @@ ob_start();
             
                 $start = microtime(true);
                 
-                personal_id_run_tests();
+                personal_id_run_basic_tests();
                 
                 echo('<h5>The entire set of tests took '. sprintf('%01.3f', microtime(true) - $start) . ' seconds to complete.</h5>');
                 
