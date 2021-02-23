@@ -1,4 +1,4 @@
-**1.1.0.3000** *(February 17, 2021)*
+**1.1.0.3000** *(February 23, 2021)*
 
 - Added support for the latest BADGER and CHAMELEON, which support personal tokens.
 - Added support for creating new users with personal token allotments.
